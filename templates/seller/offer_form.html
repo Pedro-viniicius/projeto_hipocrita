@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{% if form.errors %}Erro: {% endif %}{{ page_title }} · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="pagina-form fluxo">
+    <p><a class="voltar" href="{% url 'seller:dashboard' %}">{% include "components/icone.html" with nome="seta-esquerda" %}<span>Meus anúncios</span></a></p>
+    <h1>{{ page_title }}</h1>
+    {% include "accounts/_form_errors.html" %}
+    {% if not contact_public %}
+      <div class="aviso aviso--warning" role="status">
+        {% include "components/icone.html" with nome="alerta-triangulo" %}
+        <p class="aviso__texto">{{ texts.CONTACT_NOTICE_BEFORE }}<a href="{% url 'seller:profile' %}">{{ texts.CONTACT_NOTICE_LINK }}</a>{{ texts.CONTACT_NOTICE_AFTER }}</p>
+      </div>
+    {% endif %}
+    <p class="legenda">Campos sem “(opcional)” são obrigatórios.</p>
+
+    <form class="form form-oferta" method="post" action="{{ action_url }}" enctype="multipart/form-data" data-texto-salvando="Enviando, pode demorar um pouco…">
+      {% csrf_token %}
+
+      {% with field=form.kind %}
+        <div class="campo campo--opcoes{% if field.errors %} campo--erro{% endif %}">
+          <fieldset{% if field.errors %} aria-describedby="{{ field.error_id }}"{% endif %}>
+            <legend>{{ field.label }}</legend>
+            {% if field.errors %}<ul class="erro" id="{{ field.error_id }}">{% for error in field.errors %}<li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>{{ error }}</span></li>{% endfor %}</ul>{% endif %}
+            <div id="{{ field.auto_id }}">
+              {% for option in form.kind_options %}
+                <label class="opcao" for="{{ option.id }}"><input type="radio" id="{{ option.id }}" name="{{ field.html_name }}" value="{{ option.value }}" required{% if option.checked %} checked{% endif %}><span class="opcao__texto">{{ option.label }}<span class="legenda">{{ option.help }}</span></span></label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        </div>
+      {% endwith %}
+
+      {{ form.title.as_field_group }}
+      {{ form.category.as_field_group }}
+      {{ form.price.as_field_group }}
+      {{ form.description.as_field_group }}
+      {{ form.fulfillment.as_field_group }}
+
+      <fieldset class="secao-variacoes">
+        <legend>{{ texts.VARIANTS_LEGEND }} <span class="opcional">(opcional)</span></legend>
+        <p class="legenda">{{ texts.VARIANTS_HELP }}</p>
+        {% for name_field, price_field in form.variant_rows %}
+          <div class="linha-acoes">
+            {{ name_field.as_field_group }}
+            {{ price_field.as_field_group }}
+          </div>
+        {% endfor %}
+      </fieldset>
+
+      {% if form.photo_items %}
+        <fieldset class="secao-fotos">
+          <legend>{{ texts.PHOTOS_CURRENT }}</legend>
+          {% if form.remove_photos.errors %}<ul class="erro" id="{{ form.remove_photos.error_id }}">{% for error in form.remove_photos.errors %}<li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>{{ error }}</span></li>{% endfor %}</ul>{% endif %}
+          <ul class="oferta-pagina__miniaturas">
+            {% for item in form.photo_items %}
+              <li>
+                {% include "components/foto.html" with url=item.photo.card_image.url w=480 h=480 alt="" %}
+                <div class="campo campo--caixa">
+                  <div class="campo__caixa"><input type="checkbox" name="{{ form.remove_photos.html_name }}" value="{{ item.photo.pk }}" id="id_remove_photos_{{ forloop.counter0 }}"{% if item.checked %} checked{% endif %}><label for="id_remove_photos_{{ forloop.counter0 }}">{{ texts.PHOTO_REMOVE }}<span class="so-leitor"> ({{ item.number }})</span></label></div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </fieldset>
+      {% endif %}
+      {{ form.photos.as_field_group }}
+
+      <fieldset class="secao-condicional so-dia">
+        <legend>{{ texts.DAILY_LEGEND }}</legend>
+        <p class="legenda">{{ texts.DAILY_INSTRUCTION }}</p>
+        {{ form.closing_time.as_field_group }}
+        {{ form.confirm_today.as_field_group }}
+      </fieldset>
+
+      <fieldset class="secao-condicional so-comida">
+        <legend>{{ texts.FOOD_LEGEND }}</legend>
+        <p class="legenda">{{ texts.FOOD_INSTRUCTION }} {{ texts.FOOD_HELP }}</p>
+        {{ form.portion.as_field_group }}
+        {{ form.ingredients.as_field_group }}
+        {{ form.allergens.as_field_group }}
+      </fieldset>
+
+      <div class="acoes-form">
+        <button type="submit" class="botao botao--primario">{% if offer %}Salvar alterações{% else %}Salvar e publicar{% endif %}</button>
+        <a class="botao botao--link" href="{% url 'seller:dashboard' %}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}
+{% block scripts %}{% include "accounts/_scripts.html" %}{% endblock %}

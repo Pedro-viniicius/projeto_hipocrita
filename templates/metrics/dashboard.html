@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Métricas · Administração · Pão de Cada Dia{% endblock %}
+{% block content %}
+  {% include "moderation/_nav.html" %}
+  <h1>Métricas</h1>
+  <p class="legenda">Últimos {{ window_days }} dias, de {{ window.start|date:"d/m/Y" }} a {{ window.end|date:"d/m/Y" }}. Contagens por dia, sem nada que identifique quem visitou.</p>
+  <div class="aviso aviso--info" role="status">
+    {% include "components/icone.html" with nome="info" %}
+    <p class="aviso__texto">Clique no WhatsApp é intenção de contato, não venda: a conversa e o pagamento acontecem fora do site.</p>
+  </div>
+
+  <h2 id="por-anuncio">Por anúncio</h2>
+  {% if offer_rows %}
+    <div class="tabela-rolavel" tabindex="0" role="region" aria-label="Tabela, role para o lado para ver todas as colunas">
+      <table class="tabela">
+        <caption class="so-leitor">Visualizações e cliques no WhatsApp por anúncio, do mais visto para o menos visto</caption>
+        <thead>
+          <tr>
+            <th scope="col">Anúncio</th>
+            <th scope="col">Vendedor</th>
+            <th scope="col">Visualizações</th>
+            <th scope="col">Cliques no WhatsApp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in offer_rows %}
+            <tr>
+              <td><a href="{% url 'moderation:offer_preview' row.offer_id %}">{{ row.title }}</a></td>
+              <td>{{ row.seller_name }}</td>
+              <td>{{ row.views }}</td>
+              <td>{{ row.clicks }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Nenhuma visualização nem clique no período.</p>
+  {% endif %}
+
+  <h2 id="por-dia">Por dia</h2>
+  {% if daily_rows %}
+    <div class="tabela-rolavel" tabindex="0" role="region" aria-label="Tabela, role para o lado para ver todas as colunas">
+      <table class="tabela">
+        <caption class="so-leitor">Totais por dia, do mais recente para o mais antigo</caption>
+        <thead>
+          <tr>
+            <th scope="col">Dia</th>
+            <th scope="col">Visualizações</th>
+            <th scope="col">Cliques no WhatsApp</th>
+            <th scope="col">Buscas sem resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in daily_rows %}
+            <tr>
+              <th scope="row">{{ row.date|date:"d/m/Y" }}</th>
+              <td>{{ row.views }}</td>
+              <td>{{ row.clicks }}</td>
+              <td>{{ row.misses }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Nenhum registro no período.</p>
+  {% endif %}
+
+  <h2 id="buscas-sem-resultado">Buscas sem resultado</h2>
+  {% if miss_rows %}
+    <p class="legenda">Termos já normalizados (sem acento e em minúsculas). Até {{ miss_limit }} termos, do mais buscado para o menos.</p>
+    <div class="tabela-rolavel" tabindex="0" role="region" aria-label="Tabela, role para o lado para ver todas as colunas">
+      <table class="tabela">
+        <caption class="so-leitor">Buscas sem resultado por termo, com quantas vezes foram feitas</caption>
+        <thead>
+          <tr>
+            <th scope="col">Termo</th>
+            <th scope="col">Vezes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in miss_rows %}
+            <tr>
+              <td>{{ row.term }}</td>
+              <td>{{ row.count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Nenhuma busca sem resultado no período.</p>
+  {% endif %}
+{% endblock %}

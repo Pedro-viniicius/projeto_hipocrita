@@ -1,0 +1,27 @@
+# Sobreposição de produção (VPS):
+#   docker compose -f compose.yaml -f compose.prod.yaml up -d --build
+# Exige um arquivo .env com SECRET_KEY, ALLOWED_HOSTS, POSTGRES_PASSWORD etc. (ver .env.example).
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+
+  web:
+    build:
+      args:
+        REQUIREMENTS: requirements.txt
+    command: ["/app/docker/start.sh"]
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      DEBUG: "false"
+      DEMO_DATA: "false"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    # Sem bind mount do código: a imagem já traz o app e os estáticos.
+    volumes: !override
+      - media:/data/media
+    # Só a própria máquina acessa; o Caddy (TLS) fica na frente.
+    ports: !override
+      - "127.0.0.1:${WEB_PORT:-8000}:8000"
+    restart: unless-stopped

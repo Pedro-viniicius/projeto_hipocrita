@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Acesso não permitido · Pão de Cada Dia{% endblock %}
+{% block main_classes %} container--erro{% endblock %}
+{% block content %}
+  <section class="pagina-erro">
+    {% include "components/icone.html" with nome="alerta-circulo" classe="icone--xg" %}
+    <h1 class="t-1">Acesso não permitido</h1>
+    <p>{{ message|default:"Você não tem permissão para fazer isso." }}</p>
+    <p><a class="botao botao--primario" href="{% url 'catalog:home' %}">Ir para o início</a></p>
+    <p class="legenda">Erro 403</p>
+  </section>
+{% endblock %}

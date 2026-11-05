@@ -1,0 +1,5 @@
+{% comment %}
+Foto ou placeholder. Contexto: url (vazio = placeholder), w, h, alt (padrão vazio),
+eager (carrega já), prioridade (foto principal da página da oferta), legenda (mostra "Sem foto" no placeholder),
+classe (modificador extra no wrapper).
+{% endcomment %}<div class="foto{% if classe %} {{ classe }}{% endif %}{% if not url %} foto--vazia{% endif %}">{% if url %}<img src="{{ url }}" alt="{{ alt|default:'' }}"{% if w and h %} width="{{ w }}" height="{{ h }}"{% endif %}{% if prioridade %} fetchpriority="high"{% elif eager %} loading="eager" decoding="async"{% else %} loading="lazy" decoding="async"{% endif %}>{% else %}{% include "components/icone.html" with nome="imagem" classe="icone--grande" %}{% if legenda %}<span class="legenda">Sem foto</span>{% endif %}{% endif %}</div>

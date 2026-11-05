@@ -1,0 +1,20 @@
+# Segredos e ambiente
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Dados locais
+db.sqlite3
+media/
+staticfiles/
+
+# Memória local dos agentes (notas internas de segurança; o repositório é público)
+.claude/agent-memory/
+.claude/settings.local.json

@@ -1,0 +1,14 @@
+{% comment %}
+Chips de categoria e filtro "Disponíveis hoje" (links, funcionam sem JS).
+Contexto: categories = lista de itens com label, url, active (o primeiro é "Tudo"); today_url; today_active.
+Os href já trazem q/cat/hoje. O item ativo leva aria-current="true" e o ícone check.
+{% endcomment %}<div class="filtros">
+  <nav aria-label="Categorias">
+    <ul class="chips">
+      {% for item in categories %}
+        <li><a class="chip" href="{{ item.url }}"{% if item.active %} aria-current="true"{% endif %}>{% if item.active %}{% include "components/icone.html" with nome="check" %}{% endif %}{{ item.label }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <p class="filtros__hoje"><a class="chip chip--hoje" href="{{ today_url }}"{% if today_active %} aria-current="true"{% endif %}>{% include "components/icone.html" with nome=today_active|yesno:"check,sol" %}Disponíveis hoje</a></p>
+</div>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Criar conta de vendedor · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="conta">
+    <h1>Criar conta de vendedor</h1>
+    {% if limit_message %}
+      {# Cadastro fechado ou teto do dia: sem formulário, para ninguém preencher à toa. Fechado não promete data. #}
+      {% if signups_closed %}
+        <div class="aviso aviso--info" role="status">{% include "components/icone.html" with nome="info" %}<p class="aviso__texto">{{ limit_message }} {% if contact_email %}Para pedir uma conta, fale com a administração pelo e-mail <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% else %}Ainda não há um contato cadastrado para pedir uma conta.{% endif %}</p></div>
+      {% else %}
+        <div class="aviso aviso--info" role="status">{% include "components/icone.html" with nome="info" %}<p class="aviso__texto">{{ limit_message }} {% if contact_email %}Se precisar antes disso, fale com a administração pelo e-mail <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% else %}Ainda não há um contato cadastrado para pedir uma conta antes disso.{% endif %}</p></div>
+      {% endif %}
+    {% else %}
+      {% include "accounts/_form_errors.html" %}
+      <p class="legenda">Campos sem “(opcional)” são obrigatórios.</p>
+      <form method="post" action="{% url 'accounts:signup' %}" class="formulario" {% include "accounts/_form_texts.html" %}>
+        {% csrf_token %}
+        {% for field in form %}
+          {{ field.as_field_group }}
+        {% endfor %}
+        <button type="submit" class="botao botao--primario">Criar conta</button>
+      </form>
+    {% endif %}
+    <p><a href="{% url 'accounts:login' %}">Já tem conta? Entrar</a></p>
+  </section>
+{% endblock %}
+{% block scripts %}{% include "accounts/_scripts.html" %}{% endblock %}

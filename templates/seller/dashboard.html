@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load catalog_ui %}
+{% block title %}Meus anúncios · Pão de Cada Dia{% endblock %}
+{% block antes_mensagens %}
+  <h1 class="pagina-titulo">Meus anúncios</h1>
+  <p class="pagina-acao"><a class="botao botao--primario botao--bloco-mobile" href="{% url 'seller:offer_create' %}">{% include "components/icone.html" with nome="mais" %}<span>Adicionar anúncio</span></a></p>
+{% endblock %}
+{% block content %}
+  <section class="fluxo">
+
+    {% if not contact_public %}
+      <div class="aviso aviso--warning" role="status">
+        {% include "components/icone.html" with nome="alerta-triangulo" %}
+        <p class="aviso__texto">{{ texts.CONTACT_NOTICE_BEFORE }}<a href="{% url 'seller:profile' %}">{{ texts.CONTACT_NOTICE_LINK }}</a>{{ texts.CONTACT_NOTICE_AFTER }}</p>
+      </div>
+    {% endif %}
+    {% if has_pending %}
+      {% include "components/aviso.html" with tipo="info" texto=texts.PENDING_NOTICE %}
+    {% endif %}
+
+    {% if items %}
+      <ul class="lista-anuncios" aria-label="Seus anúncios">
+        {% for item in items %}
+          <li>
+            <article class="anuncio" id="{{ item.anchor_id }}" aria-labelledby="{{ item.anchor_id }}-titulo">
+              <div class="anuncio__miniatura">{% if item.photo %}{% include "components/foto.html" with url=item.photo.card_image.url w=480 h=480 %}{% else %}{% include "components/foto.html" %}{% endif %}</div>
+              <div class="anuncio__corpo">
+                <h2 class="texto-forte" id="{{ item.anchor_id }}-titulo">{{ item.offer.title }}</h2>
+                {% include "components/selo.html" with state=item.state %}
+                <p>{% if item.price_from %}<span class="legenda">{{ texts.PRICE_FROM }}</span> {% endif %}<span class="preco">{{ item.price_cents|brl }}</span></p>
+                <p class="legenda">{{ item.kind_label }}{% if item.note %} · {{ item.note }}{% endif %}</p>
+              </div>
+              <div class="anuncio__acoes">
+                {% if item.primary %}
+                  <form method="post" action="{% url 'seller:offer_action' item.offer.pk %}">
+                    {% csrf_token %}
+                    <button class="botao botao--confirmar" type="submit" name="action" value="{{ item.primary.key }}">{{ item.primary.label }}</button>
+                  </form>
+                {% endif %}
+                <a class="botao botao--secundario" href="{% url 'seller:offer_edit' item.offer.pk %}">Editar<span class="so-leitor"> “{{ item.offer.title }}”</span></a>
+                {% if item.menu %}
+                  {% url 'seller:offer_action' item.offer.pk as action_url %}
+                  {% include "components/menu_acoes.html" with action_url=action_url actions=item.menu rotulo=item.offer.title %}
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      {% include "components/vazio.html" with titulo="Você ainda não tem anúncios" texto="Anuncie o que você vende em poucos minutos." icone="etiqueta-check" %}
+    {% endif %}
+  </section>
+{% endblock %}

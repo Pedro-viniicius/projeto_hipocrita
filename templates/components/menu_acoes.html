@@ -1,0 +1,10 @@
+{% comment %}
+Menu "Mais ações" do vendedor (sem JS: <details>). Contexto: action_url (POST), actions = lista de itens com key e label, rotulo (opcional: nome do anúncio; vira parte do nome acessível).
+Cada ação é um <button name="action" value="{{ key }}"> de 44 px, dentro de um form POST com CSRF.
+{% endcomment %}<details class="menu-acoes">
+  <summary class="botao botao--secundario">Mais ações{% if rotulo %}<span class="so-leitor"> de “{{ rotulo }}”</span>{% endif %}</summary>
+  <form class="menu-acoes__lista" method="post" action="{{ action_url }}">
+    {% csrf_token %}
+    {% for item in actions %}<button class="menu-acoes__item" type="submit" name="action" value="{{ item.key }}">{{ item.label }}</button>{% endfor %}
+  </form>
+</details>

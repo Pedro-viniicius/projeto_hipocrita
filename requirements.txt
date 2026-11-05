@@ -1,0 +1,8 @@
+# Dependências de produção (versões fixas; conferidas no PyPI em 2026-11-05).
+Django==5.2.19
+psycopg[binary]==3.3.8
+Pillow==13.0.0
+gunicorn==26.2.0
+whitenoise==6.12.0
+django-storages==1.14.6
+boto3==1.43.124

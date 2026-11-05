@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Categorias · Administração · Pão de Cada Dia{% endblock %}
+{% block content %}
+  {% include "moderation/_nav.html" %}
+  <h1>Categorias</h1>
+  <p class="legenda">A posição define a ordem dos botões de categoria na vitrine (menor número primeiro). Categoria escondida some dos filtros, mas os anúncios dela continuam em “Tudo” e na busca. Não dá para excluir.</p>
+  {% if invalid_form %}{% include "accounts/_form_errors.html" with form=invalid_form %}{% endif %}
+
+  <h2>Categorias existentes</h2>
+  <ul class="lista-categorias">
+    {% for category, form in rows %}
+      <li id="categoria-{{ category.pk }}">
+        <form method="post" action="{% url 'moderation:category_update' category.pk %}" class="form">
+          {% csrf_token %}
+          <fieldset class="grupo">
+            <legend>{{ category.name }} · {% if category.is_active %}Visível na vitrine{% else %}Escondida{% endif %}</legend>
+            {{ form.name.as_field_group }}
+            {{ form.position.as_field_group }}
+            {{ form.is_food.as_field_group }}
+          </fieldset>
+          <div class="acoes-form">
+            <button type="submit" name="action" value="save" class="botao botao--primario">Salvar<span class="so-leitor"> {{ category.name }}</span></button>
+            {% if category.is_active %}
+              <button type="submit" name="action" value="hide" class="botao botao--secundario">Esconder<span class="so-leitor"> {{ category.name }}</span></button>
+            {% else %}
+              <button type="submit" name="action" value="show" class="botao botao--secundario">Mostrar<span class="so-leitor"> {{ category.name }}</span></button>
+            {% endif %}
+          </div>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h2 id="nova-categoria">Nova categoria</h2>
+  <form method="post" action="{% url 'moderation:categories' %}" class="form" aria-labelledby="nova-categoria">
+    {% csrf_token %}
+    {{ new_form.name.as_field_group }}
+    {{ new_form.position.as_field_group }}
+    {{ new_form.is_food.as_field_group }}
+    <div class="acoes-form">
+      <button type="submit" class="botao botao--primario">Criar categoria</button>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% load static %}<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algo deu errado · Pão de Cada Dia</title>
+  <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body class="corpo-erro">
+  {# Independente de contexto, sessão e banco: não estende base.html, não usa {% url %} nem usuário. Só CSS externo (CSP). #}
+  <main id="conteudo" tabindex="-1" class="container container--erro">
+    <section class="pagina-erro">
+      <p class="marca marca--escura"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" class="logo"><rect x="4" y="4" width="40" height="20" rx="10"/><rect x="10" y="16" width="28" height="22" rx="4"/><path d="M10 32 L8 44 L21 38 Z"/><g class="pontos"><circle cx="17" cy="28" r="2.5"/><circle cx="24" cy="28" r="2.5"/><circle cx="31" cy="28" r="2.5"/></g></svg><span class="marca__nome">Pão de Cada Dia</span></p>
+      <h1 class="t-1">Algo deu errado do nosso lado</h1>
+      <p>Já estamos de olho. Tente de novo em instantes.</p>
+      <p><a class="botao botao--primario" href="">Tentar de novo</a></p>
+      <p class="legenda">Erro 500</p>
+    </section>
+  </main>
+</body>
+</html>

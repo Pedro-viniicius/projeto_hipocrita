@@ -1,0 +1,15 @@
+{% comment %}
+Cartão de oferta (CA3). Contexto: card = OfferCardVM
+(anchor_id, url, title, photo_url, photo_w, photo_h, price_label, price_from, price_struck,
+state, seller_name, fulfillment, eager). O cartão inteiro é um único link: o <a> do título
+se estende pelo cartão com ::after. Nada clicável dentro. Use dentro de <li> de .lista-ofertas.
+{% endcomment %}<article class="cartao-oferta{% if card.state %} cartao-oferta--{{ card.state.key }}{% endif %}" id="{{ card.anchor_id }}">
+  <div class="cartao-oferta__foto">{% include "components/foto.html" with url=card.photo_url w=card.photo_w h=card.photo_h eager=card.eager %}</div>
+  <div class="cartao-oferta__corpo">
+    <h3 class="cartao-oferta__titulo texto-forte"><a class="cartao-oferta__link" href="{{ card.url }}">{{ card.title }}</a></h3>
+    <p class="cartao-oferta__preco">{% if card.price_from %}<span class="legenda">A partir de</span> {% endif %}<span class="preco{% if card.price_struck %} preco--riscado{% endif %}">{{ card.price_label }}</span></p>
+    {% if card.state %}<p class="cartao-oferta__estado">{% include "components/selo.html" with state=card.state %}</p>{% endif %}
+    <p class="legenda cartao-oferta__meta">{{ card.seller_name }}{% if card.fulfillment %} · {{ card.fulfillment }}{% endif %}</p>
+    <p class="cartao-acao" aria-hidden="true">Ver oferta {% include "components/icone.html" with nome="seta-direita" %}</p>
+  </div>
+</article>

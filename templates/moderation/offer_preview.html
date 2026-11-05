@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load catalog_ui %}
+{% block title %}Prévia: {{ offer.title }} · Administração · Pão de Cada Dia{% endblock %}
+{% block content %}
+  {% include "moderation/_nav.html" %}
+  <p><a class="voltar" href="{% if row.is_pending %}{% url 'moderation:approvals' %}{% else %}{% url 'moderation:offers' %}{% endif %}">← Voltar para {% if row.is_pending %}as aprovações{% else %}os anúncios{% endif %}</a></p>
+  <div class="aviso aviso--info" role="status">
+    {% include "components/icone.html" with nome="info" %}
+    <p class="aviso__texto">Prévia só para a administração. O visitante vê este anúncio só quando ele está aprovado, visível e com contato liberado.</p>
+  </div>
+
+  <article class="oferta-pagina">
+    <div class="oferta-pagina__cabeca">
+      <h1>{{ offer.title }}</h1>
+      {% include "components/selo.html" with state=row.state %}
+      {% if row.is_hidden %}<p class="legenda">Ocultado em {{ offer.hidden_at|date:"d/m/Y H:i" }}{% if offer.hidden_reason %}. Motivo: {{ offer.hidden_reason }}{% endif %}</p>{% endif %}
+      <p><strong>{% if row.price_from %}A partir de {% endif %}{{ row.price_cents|brl }}</strong></p>
+      <p class="oferta-pagina__retirada">{% include "components/icone.html" with nome="pino" %} {{ offer.fulfillment }}</p>
+      <dl>
+        <dt>Vendedor</dt><dd>{{ offer.seller.display_name }}</dd>
+        <dt>Categoria</dt><dd>{{ offer.category.name }}</dd>
+        <dt>Tipo</dt><dd>{{ offer.get_kind_display }}</dd>
+        <dt>Enviado em</dt><dd>{{ offer.created_at|date:"d/m/Y H:i" }}</dd>
+      </dl>
+    </div>
+
+    <div class="oferta-pagina__fotos">
+      {% for photo in photos %}
+        {% include "components/foto.html" with url=photo.page_image.url w=photo.page_width h=photo.page_height alt=offer.title classe="foto--pagina" prioridade=forloop.first %}
+      {% empty %}
+        {% include "components/foto.html" with url="" classe="foto--pagina" legenda=True %}
+      {% endfor %}
+    </div>
+
+    <div class="oferta-pagina__conteudo">
+    {% if offer.description %}
+      <h2>Descrição</h2>
+      <p class="texto-corrido">{{ offer.description }}</p>
+    {% endif %}
+
+    {% if variants %}
+      <h2>Opções</h2>
+      <ul>
+        {% for variant in variants %}<li>{{ variant.name }}: {{ variant.price_cents|brl }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if offer.category.is_food %}
+      <h2>Sobre este alimento</h2>
+      <dl class="alimento">
+        <dt class="rotulo">Porção</dt><dd>{{ offer.portion|default:"Não informado pelo vendedor" }}</dd>
+        <dt class="rotulo">Ingredientes</dt><dd>{{ offer.ingredients|default:"Não informado pelo vendedor" }}</dd>
+        <dt class="rotulo">Alergênicos</dt><dd>{{ offer.allergens|default:"Não informado pelo vendedor" }}</dd>
+      </dl>
+    {% endif %}
+    </div>
+  </article>
+
+  <section aria-labelledby="acoes-titulo">
+    <h2 id="acoes-titulo">Ações da administração</h2>
+    {% if row.is_pending and not row.is_hidden %}
+      <form method="post" action="{% url 'moderation:offer_approve' offer.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{% url 'moderation:approvals' %}">
+        <button type="submit" class="botao botao--confirmar">Aprovar</button>
+      </form>
+    {% endif %}
+    {% if row.is_hidden %}
+      <form method="post" action="{% url 'moderation:offer_show' offer.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit" class="botao botao--secundario">Mostrar de novo</button>
+      </form>
+    {% else %}
+      {% include "accounts/_form_errors.html" with form=hide_form %}
+      <form method="post" action="{% url 'moderation:offer_hide' offer.pk %}" class="form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        {{ hide_form.reason.as_field_group }}
+        <div class="acoes-form">
+          <button type="submit" class="botao botao--secundario">Ocultar</button>
+        </div>
+      </form>
+    {% endif %}
+  </section>
+{% endblock %}

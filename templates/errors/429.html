@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Muitas tentativas · Pão de Cada Dia{% endblock %}
+{% block main_classes %} container--erro{% endblock %}
+{% block content %}
+  <section class="pagina-erro">
+    {% include "components/icone.html" with nome="relogio" classe="icone--xg" %}
+    <h1 class="t-1">{{ title|default:"Muitas tentativas" }}</h1>
+    <p>{{ message|default:"Espere alguns minutos e tente de novo." }}</p>
+    <p><a class="botao botao--secundario" href="{% url 'catalog:home' %}">Ir para o início</a></p>
+    <p class="legenda">Erro 429</p>
+  </section>
+{% endblock %}

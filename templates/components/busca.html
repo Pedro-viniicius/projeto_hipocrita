@@ -1,0 +1,13 @@
+{% comment %}
+Busca da vitrine. Contexto: q (valor atual), cat (slug da categoria ativa, opcional), hoje (true se o filtro está ativo),
+action (padrão "/"), tema ("escuro" quando dentro da faixa azul do cabeçalho). O botão fica sempre visível (sem JS).
+{% endcomment %}<form class="busca{% if tema == 'escuro' %} busca--no-azul{% endif %}" role="search" method="get" action="{{ action|default:'/' }}">
+  {% if cat %}<input type="hidden" name="cat" value="{{ cat }}">{% endif %}
+  {% if hoje %}<input type="hidden" name="hoje" value="1">{% endif %}
+  <div class="busca__campo">
+    <label class="so-leitor" for="busca-q">Buscar produto, serviço ou vendedor</label>
+    {% include "components/icone.html" with nome="lupa" classe="busca__icone" %}
+    <input id="busca-q" class="busca__entrada" type="search" name="q" value="{{ q|default:'' }}" placeholder="Bolo, apostila, aula particular…" autocomplete="off" enterkeyhint="search">
+  </div>
+  <button class="botao botao--primario" type="submit">Buscar</button>
+</form>

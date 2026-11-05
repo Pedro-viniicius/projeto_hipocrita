@@ -1,0 +1,17 @@
+{% comment %}Resumo de erros no topo do formulário (spec 2.8). Recebe `form`.{% endcomment %}
+{% if form.errors %}
+  <div class="aviso aviso--error" role="alert">
+    {% include "components/icone.html" with nome="alerta-circulo" %}
+    <div class="aviso__texto">
+    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+    {% with fields=form.fields_with_errors %}
+      {% if fields %}
+        <p>Corrija {{ fields|length }} campo{{ fields|length|pluralize }} para continuar.</p>
+        <ul>
+          {% for field in fields %}<li><a href="#{{ field.auto_id }}">{{ field.label }}</a></li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+  </div>
+{% endif %}

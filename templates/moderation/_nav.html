@@ -1,0 +1,10 @@
+{% comment %}Abas da administração. Contexto: active_tab (approvals | reports | offers | categories | metrics).{% endcomment %}
+<nav class="admin-nav" aria-label="Administração">
+  <ul>
+    <li><a href="{% url 'moderation:approvals' %}"{% if active_tab == 'approvals' %} aria-current="page"{% endif %}>Aprovações</a></li>
+    <li><a href="{% url 'moderation:reports' %}"{% if active_tab == 'reports' %} aria-current="page"{% endif %}>Denúncias</a></li>
+    <li><a href="{% url 'moderation:offers' %}"{% if active_tab == 'offers' %} aria-current="page"{% endif %}>Anúncios</a></li>
+    <li><a href="{% url 'moderation:categories' %}"{% if active_tab == 'categories' %} aria-current="page"{% endif %}>Categorias</a></li>
+    <li><a href="{% url 'metrics:dashboard' %}"{% if active_tab == 'metrics' %} aria-current="page"{% endif %}>Métricas</a></li>
+  </ul>
+</nav>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Página não encontrada · Pão de Cada Dia{% endblock %}
+{% block main_classes %} container--erro{% endblock %}
+{% block content %}
+  <section class="pagina-erro">
+    {% include "components/icone.html" with nome="lupa" classe="icone--xg" %}
+    <h1 class="t-1">{{ title|default:"Não encontramos esta página" }}</h1>
+    <p>{{ message|default:"O endereço pode estar errado." }}</p>
+    <p><a class="botao botao--primario" href="{% url 'catalog:home' %}">{{ action_label|default:"Ir para o início" }}</a></p>
+    <p class="legenda">Erro 404</p>
+  </section>
+{% endblock %}

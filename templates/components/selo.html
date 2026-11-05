@@ -1,0 +1,1 @@
+{% comment %}Selo de estado. Uso: {% include "components/selo.html" with state=card.state %} (state = StateVM: key, label, icon). Sem state, não mostra nada.{% endcomment %}{% if state %}<span class="selo selo--{{ state.key }}">{% include "components/icone.html" with nome=state.icon %}<span>{{ state.label }}</span></span>{% endif %}

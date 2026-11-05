@@ -1,0 +1,32 @@
+[project]
+name = "pao-de-cada-dia"
+version = "0.1.0"
+description = "Vitrine de compra e venda entre estudantes do Campus Paraíso (UFLA/ICTIN)."
+requires-python = ">=3.14"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings_test"
+python_files = ["test_*.py"]
+testpaths = ["apps"]
+addopts = "-ra --strict-markers"
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = ["*/migrations/*", "staticfiles", "media"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "DJ", "SIM", "S"]
+ignore = [
+    "S101",  # assert é o padrão do pytest
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/*" = ["S105", "S106", "S311"]
+"conftest.py" = ["S105", "S106", "S311"]
+"config/settings_test.py" = ["S105"]
+"apps/core/testing.py" = ["S311"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config", "texts"]

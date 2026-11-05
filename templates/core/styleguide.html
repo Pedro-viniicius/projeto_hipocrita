@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+{% block title %}Guia de estilos · Pão de Cada Dia{% endblock %}
+{% block main_classes %} sg{% endblock %}
+{% block content %}
+  <h1 class="t-1">Guia de estilos</h1>
+  <p class="sg-nota legenda">Só existe com DEBUG ligado. Tudo é CSS de <code>static/css/app.css</code> (o CSP proíbe estilo e script inline). Os dev usam as classes e os parciais abaixo e não editam <code>base.html</code>, <code>components/</code> nem o CSS: o que faltar vai para as pendências.</p>
+
+  <section aria-labelledby="sg-cores">
+    <h2 id="sg-cores">Cores e contraste</h2>
+    <ul class="sg-grade">
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--azul-lavras"></div><div class="sg-amostra__nome"><strong>Azul Lavras</strong>#1F4171 · ação, cabeçalho</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--verde-campus"></div><div class="sg-amostra__nome"><strong>Verde Campus</strong>#06713F · preço, confirmar</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--noite"></div><div class="sg-amostra__nome"><strong>Noite ICTIN</strong>#050C45 · faixas escuras</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--ciano"></div><div class="sg-amostra__nome"><strong>Ciano Circuito</strong>#2EC4EA · só sobre Noite</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--tinta"></div><div class="sg-amostra__nome"><strong>Tinta</strong>#0F1A2E · texto</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--grafite"></div><div class="sg-amostra__nome"><strong>Grafite</strong>#4A5468 · apoio</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--nevoa"></div><div class="sg-amostra__nome"><strong>Névoa</strong>#E4E9F0 · linhas, fundos</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--papel"></div><div class="sg-amostra__nome"><strong>Papel</strong>#F5F7FA · fundo</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--borda-campo"></div><div class="sg-amostra__nome"><strong>Borda de campo</strong>#7B8499 · 3,75:1</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--ambar"></div><div class="sg-amostra__nome"><strong>Âmbar</strong>#9A5B00 · atenção</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--vermelho"></div><div class="sg-amostra__nome"><strong>Vermelho</strong>#B42318 · erro, perigo</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--azul-50"></div><div class="sg-amostra__nome"><strong>Azul 50</strong>#E8EEF7</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--verde-50"></div><div class="sg-amostra__nome"><strong>Verde 50</strong>#E3F2EA</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--ambar-50"></div><div class="sg-amostra__nome"><strong>Âmbar 50</strong>#FFF4E0</div></li>
+      <li class="sg-amostra"><div class="sg-amostra__cor sg-cor--vermelho-50"></div><div class="sg-amostra__nome"><strong>Vermelho 50</strong>#FDECEA</div></li>
+    </ul>
+    <h3>Pares aprovados (razão de contraste WCAG)</h3>
+    <div class="sg-tabela-rolavel">
+      <table class="sg-tabela">
+        <caption class="so-leitor">Pares de cor e contraste</caption>
+        <thead><tr><th scope="col">Uso</th><th scope="col">Texto / fundo</th><th scope="col">Razão</th></tr></thead>
+        <tbody>
+          <tr><td>Texto principal</td><td>Tinta / Branco, Papel, Névoa</td><td>17,4 · 16,2 · 14,3</td></tr>
+          <tr><td>Apoio, placeholder, legenda</td><td>Grafite / Branco, Papel, Névoa, Azul 50</td><td>7,6 · 7,1 · 6,2 · 6,5</td></tr>
+          <tr><td>Botão primário, cabeçalho</td><td>Branco / Azul Lavras</td><td>10,2</td></tr>
+          <tr><td>Preço, botão confirmar</td><td>Verde Campus / Branco, Papel, Verde 50</td><td>6,1 · 5,7 · 5,3</td></tr>
+          <tr><td>Esgotado, aviso de atenção</td><td>Âmbar / Âmbar 50, Branco</td><td>5,0 · 5,4</td></tr>
+          <tr><td>Erro, perigo</td><td>Vermelho / Vermelho 50, Branco</td><td>5,8 · 6,6</td></tr>
+          <tr><td>Borda de campo, chip, rádio</td><td>Borda campo / Branco</td><td>3,75 (mín. 3:1)</td></tr>
+          <tr><td>Ciano sobre faixa escura</td><td>Ciano / Noite ICTIN</td><td>8,9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="legenda">Ciano nunca sobre Branco, Papel ou Azul Lavras. Verde e âmbar nunca são o único sinal: sempre ícone e palavra.</p>
+    <div class="sg-faixa sg-faixa--noite fluxo">
+      <p class="rotulo sg-ciano">Faixa escura</p>
+      <p>Texto branco sobre Noite ICTIN. <span class="sg-ciano">Ciano só aqui.</span></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="sg-tipo">
+    <h2 id="sg-tipo">Tipografia</h2>
+    <div class="sg-escala">
+      <p class="t-display">Display .t-display</p>
+      <p class="t-1">Título 1 .t-1 (h1)</p>
+      <p class="t-2">Título 2 .t-2 (h2)</p>
+      <p class="rotulo">Rótulo .rotulo</p>
+      <p>Texto .texto, Source Sans 3, 17/24. Oi! Ainda tem o bolo de pote de ninho com morango?</p>
+      <p class="texto-forte">Nome e ênfase .texto-forte</p>
+      <p class="legenda">Legenda .legenda, apoio e dicas.</p>
+      <p><span class="preco">R$ 8,00</span> .preco &nbsp; <span class="preco preco--riscado">R$ 12,00</span> .preco--riscado</p>
+    </div>
+    <p class="legenda">Títulos: Barlow Condensed 600/700. Corpo: Source Sans 3 400/600/700. Self-hosted (OFL). Caixa alta só em <code>.rotulo</code> e na marca.</p>
+  </section>
+
+  <section aria-labelledby="sg-botoes">
+    <h2 id="sg-botoes">Botões</h2>
+    <div class="linha-acoes">
+      <a class="botao botao--primario" href="#sg-botoes">{% include "components/icone.html" with nome="mensagem" %}Consultar no WhatsApp</a>
+      <button class="botao botao--secundario" type="button">{% include "components/icone.html" with nome="lapis" %}Editar</button>
+      <button class="botao botao--confirmar" type="button">{% include "components/icone.html" with nome="circulo-check" %}Confirmar disponível hoje</button>
+      <button class="botao botao--perigo" type="button">Excluir minha conta para sempre</button>
+      <a class="botao botao--link" href="#sg-botoes">{% include "components/icone.html" with nome="bandeira" %}Denunciar esta oferta</a>
+      <button class="botao botao--primario" type="button" disabled>Desabilitado</button>
+    </div>
+    <p class="legenda">Classes: <code>.botao</code> + <code>--primario</code>, <code>--secundario</code>, <code>--confirmar</code>, <code>--perigo</code>, <code>--link</code>. <code>.botao--bloco-mobile</code> = largura total no celular. Foco: contorno de 3 px (passe o Tab).</p>
+  </section>
+
+  <section aria-labelledby="sg-busca">
+    <h2 id="sg-busca">Busca, filtros e cabeçalho do início</h2>
+    <p class="legenda sg-nota">A faixa abaixo é o bloco <code>{% templatetag openblock %} block faixa {% templatetag closeblock %}</code> do <code>base.html</code> (dentro de <code>header.cabecalho</code>), que a página inicial preenche com <code>div.container.cabecalho__faixa</code>: <code>p.cabecalho__assinatura</code>, o <code>h1</code> e <code>components/busca.html</code> com <code>tema="escuro"</code>. A partir de 960 px o <code>h1</code> e a busca ficam lado a lado.</p>
+    <div class="cabecalho sg-faixa-real">
+      <div class="container cabecalho__faixa">
+        <p class="cabecalho__assinatura">Compra e venda entre estudantes · Campus Paraíso · MG</p>
+        <p class="t-1">O que tem no campus hoje?</p>
+        {% include "components/busca.html" with tema="escuro" %}
+      </div>
+    </div>
+    <h3>Chips de categoria e “Disponíveis hoje”</h3>
+    <p class="legenda">Parcial <code>components/filtros.html</code>: <code>categories</code> (label, url, active), <code>today_url</code>, <code>today_active</code>. Abaixo: “Tudo” ativo e filtro desligado.</p>
+    <div class="filtros">
+      <nav aria-label="Categorias de exemplo">
+        <ul class="chips">
+          <li><a class="chip" href="#sg-busca" aria-current="true">{% include "components/icone.html" with nome="check" %}Tudo</a></li>
+          <li><a class="chip" href="#sg-busca">Comidas e doces</a></li>
+          <li><a class="chip" href="#sg-busca">Bebidas</a></li>
+          <li><a class="chip" href="#sg-busca">Serviços</a></li>
+          <li><a class="chip" href="#sg-busca">Objetos e usados</a></li>
+        </ul>
+      </nav>
+      <p class="filtros__hoje"><a class="chip chip--hoje" href="#sg-busca">{% include "components/icone.html" with nome="sol" %}Disponíveis hoje</a></p>
+      <p class="filtros__hoje"><a class="chip chip--hoje" href="#sg-busca" aria-current="true">{% include "components/icone.html" with nome="check" %}Disponíveis hoje (ativo)</a></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="sg-cartoes">
+    <h2 id="sg-cartoes">Cartões de oferta (contrato OfferCardVM)</h2>
+    <p class="legenda sg-nota">Parcial <code>components/offer_card.html</code> com <code>card</code>. Use dentro de <code>&lt;ul class="lista-ofertas"&gt;&lt;li&gt;…&lt;/li&gt;&lt;/ul&gt;</code>, sob um <code>h2</code>. O cartão inteiro é um único link. Celular: linha com foto de 112 px. A partir de 600 px: vertical, em grade de 2 e depois 3 colunas. Exemplos: normal, “A partir de”, título longo com Esgotado, Vendido (preço riscado), sem selo.</p>
+    <ul class="lista-ofertas">
+      {% for card in cards %}<li>{% include "components/offer_card.html" with card=card %}</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section aria-labelledby="sg-selos">
+    <h2 id="sg-selos">Selos de estado</h2>
+    <p class="legenda sg-nota">Parcial <code>components/selo.html</code> com <code>state</code> (key, label, icon). Classe <code>.selo--&lt;key&gt;</code>. Os três últimos só aparecem para o vendedor, nunca em HTML público. Sem estado público, o cartão não mostra selo.</p>
+    <ul class="linha-acoes">
+      {% for state in states %}<li>{% include "components/selo.html" with state=state %}</li>{% endfor %}
+      <li><span class="selo selo--hidden">{% include "components/icone.html" with nome="alerta-circulo" %}<span>Oculto pela administração</span></span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="sg-fotos">
+    <h2 id="sg-fotos">Foto e placeholder</h2>
+    <p class="legenda sg-nota">Parcial <code>components/foto.html</code> (url, w, h, alt, eager, prioridade, legenda, classe). Sem <code>url</code> o servidor já entrega o placeholder, sem <code>onerror</code>. Na página da oferta use <code>classe="foto--pagina"</code> e <code>legenda=True</code>.</p>
+    <ul class="sg-grade">
+      <li>{% include "components/foto.html" with classe="foto--pagina" legenda=True %}</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="sg-avisos">
+    <h2 id="sg-avisos">Avisos e mensagens</h2>
+    <p class="legenda sg-nota">Parcial <code>components/aviso.html</code> (tipo: success, info, warning, error; texto). As mensagens do Django entram no topo do <code>main</code> pelo <code>base.html</code> (veja as duas acima). Erro usa <code>role="alert"</code>. Persistem até a próxima navegação.</p>
+    <div class="fluxo">
+      {% include "components/aviso.html" with tipo="success" texto="Pronto: “Bolo de pote” confirmado como disponível hoje." %}
+      {% include "components/aviso.html" with tipo="info" texto="Seu primeiro anúncio está em análise. Quando for aprovado, ele aparece para todo mundo." %}
+      {% include "components/aviso.html" with tipo="warning" texto="Ao excluir, seus anúncios saem da vitrine na hora e isso não pode ser desfeito." %}
+      {% include "components/aviso.html" with tipo="error" texto="Não conseguimos salvar. Tente de novo." %}
+      <div class="aviso aviso--error" role="alert">
+        {% include "components/icone.html" with nome="alerta-circulo" %}
+        <div>
+          <p>Corrija 2 campos para continuar.</p>
+          <ul><li><a href="#id_title">Título</a></li><li><a href="#id_category">Categoria</a></li></ul>
+        </div>
+      </div>
+    </div>
+    <p class="legenda">Acima, o resumo de erros de formulário: <code>.aviso.aviso--error[role=alert]</code> com texto e lista de links âncora para <code>field.id_for_label</code>.</p>
+    <h3>Aviso do WhatsApp</h3>
+    {% include "components/aviso_contato.html" %}
+  </section>
+
+  <section aria-labelledby="sg-form">
+    <h2 id="sg-form">Formulário com erros</h2>
+    <p class="legenda sg-nota">Renderizado por <code>{% templatetag openvariable %} form.as_div {% templatetag closevariable %}</code> com <code>templates/django/forms/field.html</code>: rótulo, “(opcional)”, dica, erro com ícone, ligados por <code>aria-describedby</code>. Dentro de <code>&lt;form class="form"&gt;</code>. Colunas: <code>.pagina-estreita</code> (28rem) e <code>.pagina-form</code> (40rem).</p>
+    <div class="pagina-form">
+      <p class="legenda">Campos sem “(opcional)” são obrigatórios.</p>
+      <form class="form" method="post" action="" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.as_div }}
+        <div class="acoes-form">
+          <button type="submit" class="botao botao--primario">Salvar alterações</button>
+          <a class="botao botao--link" href="#sg-form">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section aria-labelledby="sg-opcoes">
+    <h2 id="sg-opcoes">Opções selecionáveis e seções condicionais (D20)</h2>
+    <div class="sg-nota fluxo">
+      <p>O formulário de anúncio tem <code>class="form form-oferta"</code>. As seções que só valem para um tipo ou categoria são <code>&lt;fieldset class="secao-condicional so-dia"&gt;</code> e <code>so-comida</code>, sempre presentes no HTML, cada uma com <code>&lt;legend&gt;</code> e a instrução “Preencha só se…”.</p>
+      <p>O CSS esconde cada seção sozinho, sem JS, com <code>:has()</code> dentro de <code>@supports selector(:has(*))</code>. Regras: <code>.so-dia</code> some quando há um <code>input[name="kind"]</code> marcado e ele não é <code>value="daily"</code>; <code>.so-comida</code> some quando o <code>select[name="category"]</code> tem uma opção marcada, com valor, sem o atributo <code>data-food</code>. Sem tipo marcado ou com a opção vazia, nada some. Navegador sem <code>:has()</code>: tudo visível. O servidor continua ignorando o que não vale (a regra é do servidor).</p>
+      <p>Contrato para o dev: nomes de campo <code>kind</code> (valores <code>recurring</code>, <code>daily</code>, <code>one_off</code>) e <code>category</code>; cada <code>&lt;option&gt;</code> de categoria de alimento precisa de <code>data-food</code> (vazio basta). O JS opcional pode esconder com <code>hidden</code>; as duas coisas convivem.</p>
+    </div>
+    <form class="form form-oferta pagina-form" action="" method="get" novalidate>
+      <div class="campo campo--opcoes">
+        <fieldset>
+          <legend>O que você vai anunciar?</legend>
+          <div>
+            <label class="opcao" for="demo-kind-1"><input type="radio" id="demo-kind-1" name="kind" value="recurring"><span class="opcao__texto">Faço sempre (ou por encomenda)<span class="legenda">Fica na vitrine até você pausar.</span></span></label>
+            <label class="opcao" for="demo-kind-2"><input type="radio" id="demo-kind-2" name="kind" value="daily"><span class="opcao__texto">Tenho hoje<span class="legenda">Só aparece em “Disponíveis hoje” depois que você confirma.</span></span></label>
+            <label class="opcao" for="demo-kind-3"><input type="radio" id="demo-kind-3" name="kind" value="one_off"><span class="opcao__texto">Venda única<span class="legenda">Fica até você marcar como vendido.</span></span></label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="campo">
+        <label for="demo-category">Categoria</label>
+        <select id="demo-category" name="category">
+          <option value="">Escolha</option>
+          <option value="1" data-food>Comidas e doces</option>
+          <option value="2" data-food>Bebidas</option>
+          <option value="3">Serviços</option>
+          <option value="4">Objetos e usados</option>
+        </select>
+      </div>
+      <fieldset class="secao-condicional so-dia">
+        <legend>Só para oferta do dia</legend>
+        <p class="legenda">Preencha só se você escolheu “Tenho hoje”.</p>
+        <div class="campo">
+          <label for="demo-fim">Horário de encerramento <span class="opcional">(opcional)</span></label>
+          <p class="legenda" id="demo-fim-dica">Se deixar em branco, vale até 23h59.</p>
+          <input type="time" id="demo-fim" aria-describedby="demo-fim-dica">
+        </div>
+      </fieldset>
+      <fieldset class="secao-condicional so-comida">
+        <legend>Só para comidas e doces</legend>
+        <p class="legenda">Preencha só se a categoria for “Comidas e doces”.</p>
+        <div class="campo">
+          <label for="demo-porcao">Porção <span class="opcional">(opcional)</span></label>
+          <input type="text" id="demo-porcao" placeholder="Exemplo: 1 pote de 200 g">
+        </div>
+      </fieldset>
+    </form>
+    <h3>Opção com preço (página da oferta)</h3>
+    <div class="pagina-form fluxo">
+      <label class="opcao" for="demo-var-1"><input type="radio" id="demo-var-1" name="demo-var" value="1"><span>Ninho com morango</span><span class="opcao__preco">R$ 8,00</span></label>
+      <label class="opcao" for="demo-var-2"><input type="radio" id="demo-var-2" name="demo-var" value="2" checked><span>Brigadeiro</span><span class="opcao__preco">R$ 7,00</span></label>
+    </div>
+  </section>
+
+  <section aria-labelledby="sg-extras">
+    <h2 id="sg-extras">Vazio, menu de ações, alimento e link copiável</h2>
+    <h3>Estado vazio</h3>
+    {% include "components/vazio.html" with titulo="Ainda não há ofertas por aqui" texto="Quando alguém publicar, aparece nesta lista." acao_url="#sg-extras" acao_texto="Quero vender" %}
+    <h3>Menu de ações</h3>
+    <p class="legenda sg-nota">Parcial <code>components/menu_acoes.html</code>: <code>action_url</code> e <code>actions</code> (key, label). Cada ação é um <code>button name="action" value="key"</code> num form POST.</p>
+    <details class="menu-acoes">
+      <summary class="botao botao--secundario">Mais ações</summary>
+      <form class="menu-acoes__lista" method="post" action="">
+        {% csrf_token %}
+        <button class="menu-acoes__item" type="submit" name="action" value="pause">Pausar</button>
+        <button class="menu-acoes__item" type="submit" name="action" value="sold_out">Marcar como esgotado</button>
+        <button class="menu-acoes__item" type="submit" name="action" value="sold">Marcar como vendido</button>
+      </form>
+    </details>
+    <h3>Bloco de alimento</h3>
+    <dl class="alimento">
+      <dt>Porção</dt><dd>1 pote de 200 g</dd>
+      <dt>Ingredientes</dt><dd class="italico">Não informado pelo vendedor</dd>
+      <dt>Alergênicos</dt><dd>Contém leite. Pode conter traços de amendoim.</dd>
+    </dl>
+    <p class="legenda">Dentro de uma seção com <code>&lt;h2 class="t-2"&gt;Sobre este alimento&lt;/h2&gt;</code> e a nota “Informado por quem vende. Confirme com a pessoa se tiver alergia.”</p>
+    <h3>Link copiável (página do vendedor)</h3>
+    <div class="copiar-link pagina-form">
+      <label class="texto-forte" for="demo-link">Endereço da página</label>
+      <input id="demo-link" type="text" readonly value="https://exemplo.invalid/vendedor/doces-da-ana">
+      <p class="legenda">Toque no endereço para selecionar e copie.</p>
+    </div>
+    <h3>Bloco do vendedor e item da área do vendedor</h3>
+    <div class="vendedor-bloco pagina-form">
+      <span class="vendedor-bloco__iniciais" aria-hidden="true">DA</span>
+      <div><p class="legenda">Vendido por</p><p class="texto-forte"><a href="#sg-extras">Doces da Ana (exemplo)</a></p></div>
+    </div>
+    <article class="anuncio lista-anuncios" id="anuncio-1">
+      <div class="anuncio__miniatura">{% include "components/foto.html" %}</div>
+      <div class="anuncio__corpo">
+        <h3>Bolo de pote (exemplo)</h3>
+        <span class="selo selo--needs_confirmation">{% include "components/icone.html" with nome="alerta-circulo" %}<span>Precisa de confirmação</span></span>
+        <p class="preco">R$ 8,00</p>
+        <p class="legenda">Venda única · Última confirmação há 12 dias</p>
+      </div>
+      <div class="anuncio__acoes">
+        <button class="botao botao--confirmar" type="button">Confirmar que ainda vendo</button>
+        <a class="botao botao--secundario" href="#sg-extras">Editar</a>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="sg-icones">
+    <h2 id="sg-icones">Ícones</h2>
+    <p class="legenda sg-nota">Sprite <code>static/icones.svg</code>, traço 2 px. Uso: <code>{% templatetag openblock %} include "components/icone.html" with nome="lupa" {% templatetag closeblock %}</code> (opcional <code>classe="icone--grande"</code> ou <code>icone--xg</code>). Sempre decorativo (<code>aria-hidden</code>), acompanhado de texto.</p>
+    <ul class="sg-icones">
+      <li>{% include "components/icone.html" with nome="lupa" %}<span>lupa</span></li>
+      <li>{% include "components/icone.html" with nome="circulo-check" %}<span>circulo-check</span></li>
+      <li>{% include "components/icone.html" with nome="relogio" %}<span>relogio</span></li>
+      <li>{% include "components/icone.html" with nome="circulo-menos" %}<span>circulo-menos</span></li>
+      <li>{% include "components/icone.html" with nome="etiqueta-check" %}<span>etiqueta-check</span></li>
+      <li>{% include "components/icone.html" with nome="pausa" %}<span>pausa</span></li>
+      <li>{% include "components/icone.html" with nome="alerta-circulo" %}<span>alerta-circulo</span></li>
+      <li>{% include "components/icone.html" with nome="ampulheta" %}<span>ampulheta</span></li>
+      <li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>alerta-triangulo</span></li>
+      <li>{% include "components/icone.html" with nome="info" %}<span>info</span></li>
+      <li>{% include "components/icone.html" with nome="mensagem" %}<span>mensagem</span></li>
+      <li>{% include "components/icone.html" with nome="imagem" %}<span>imagem</span></li>
+      <li>{% include "components/icone.html" with nome="pino" %}<span>pino</span></li>
+      <li>{% include "components/icone.html" with nome="caminhao" %}<span>caminhao</span></li>
+      <li>{% include "components/icone.html" with nome="check" %}<span>check</span></li>
+      <li>{% include "components/icone.html" with nome="mais" %}<span>mais</span></li>
+      <li>{% include "components/icone.html" with nome="lapis" %}<span>lapis</span></li>
+      <li>{% include "components/icone.html" with nome="seta-direita" %}<span>seta-direita</span></li>
+      <li>{% include "components/icone.html" with nome="seta-esquerda" %}<span>seta-esquerda</span></li>
+      <li>{% include "components/icone.html" with nome="copiar" %}<span>copiar</span></li>
+      <li>{% include "components/icone.html" with nome="compartilhar" %}<span>compartilhar</span></li>
+      <li>{% include "components/icone.html" with nome="bandeira" %}<span>bandeira</span></li>
+      <li>{% include "components/icone.html" with nome="sol" %}<span>sol</span></li>
+      <li>{% include "components/icone.html" with nome="usuario" %}<span>usuario</span></li>
+      <li>{% include "components/icone.html" with nome="x" %}<span>x</span></li>
+    </ul>
+  </section>
+{% endblock %}

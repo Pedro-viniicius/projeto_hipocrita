@@ -1,0 +1,8 @@
+{% comment %}
+Estado vazio. Contexto: icone (padrão "imagem"), titulo, texto, acao_url e acao_texto (opcionais; botão secundário).
+{% endcomment %}<section class="vazio" aria-labelledby="vazio-titulo">
+  {% include "components/icone.html" with nome=icone|default:"imagem" classe="icone--xg" %}
+  <h2 class="t-2" id="vazio-titulo">{{ titulo }}</h2>
+  {% if texto %}<p>{{ texto }}</p>{% endif %}
+  {% if acao_url %}<p><a class="botao botao--secundario" href="{{ acao_url }}">{{ acao_texto }}</a></p>{% endif %}
+</section>

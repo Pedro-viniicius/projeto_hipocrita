@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} · Pão de Cada Dia{% endblock %}
+{% block faixa %}<div class="container cabecalho__faixa">
+  <p class="cabecalho__assinatura">Compra e venda entre estudantes · Campus Paraíso · MG</p>
+  <h1>{{ heading }}</h1>
+  {% include "components/busca.html" with tema="escuro" q=params.q cat=params.cat hoje=params.hoje %}
+</div>{% endblock %}
+{% block content %}
+  {% include "components/filtros.html" with categories=categories today_url=today_url today_active=params.hoje %}
+
+  <section aria-labelledby="lista-titulo">
+    <h2 class="t-2 lista-titulo" id="lista-titulo">{{ list_heading }}</h2>
+    {% if cards %}
+      <ul class="lista-ofertas">
+        {% for card in cards %}<li>{% include "components/offer_card.html" with card=card %}</li>{% endfor %}
+      </ul>
+      {% if more_url %}
+        <p class="lista-mais"><a class="botao botao--secundario botao--bloco-mobile" href="{{ more_url }}">{{ more_label }}</a></p>
+      {% endif %}
+    {% else %}
+      {% include "components/vazio.html" with titulo=empty.titulo texto=empty.texto acao_url=empty.acao_url acao_texto=empty.acao_texto %}
+    {% endif %}
+  </section>
+{% endblock %}

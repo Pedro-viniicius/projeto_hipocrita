@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Privacidade · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <article class="texto-corrido">
+    <h1 class="t-1">Privacidade</h1>
+    <p class="legenda">Guardamos só o necessário para a vitrine funcionar.</p>
+
+    <h2 class="t-2">Quem cuida dos seus dados</h2>
+    <p>Responsável: <strong>{% if controller_name %}{{ controller_name }}{% else %}a definir{% endif %}</strong></p>
+    <p>Contato: {% if contact_email %}<a href="mailto:{{ contact_email }}">{{ contact_email }}</a>{% else %}<strong>a definir</strong>{% endif %}</p>
+    <p>Por esse contato, sem precisar entrar na conta, você pode: saber se temos dados seus e pedir uma cópia; corrigir dados errados; pedir que sejam apagados; saber com quem eles são compartilhados; e retirar a autorização para mostrar seu WhatsApp. Se a resposta não resolver, você pode reclamar na ANPD (Autoridade Nacional de Proteção de Dados).</p>
+
+    <h2 class="t-2">Se você só visita</h2>
+    <p>Não pedimos cadastro. Contamos, por dia, quantas vezes cada oferta foi aberta, quantas vezes o botão do WhatsApp foi usado e quais buscas não encontraram nada. Essas contagens não têm IP (o endereço do seu aparelho na internet), identificador do aparelho nem cookie, então não dá para ligá-las a uma pessoa. O termo de uma busca sem resultado fica guardado como foi digitado: não escreva nomes de pessoas na busca.</p>
+    <p>Não usamos cookies de rastreamento, nem de publicidade, nem serviços de análise de terceiros. As fontes das páginas ficam no nosso servidor. Os formulários (como o de denúncia) usam um cookie técnico de proteção contra envio forjado, que não identifica você.</p>
+    <p>Quando você envia um formulário (denúncia, cadastro, entrar ou recuperar senha) ou toca em “Consultar no WhatsApp”, guardamos por pouco tempo um código do seu IP para limitar abusos. Veja os prazos abaixo.</p>
+
+    <h2 class="t-2">Se você vende</h2>
+    <p>Para ter uma conta, guardamos:</p>
+    <ul>
+      <li>e-mail e senha (a senha fica cifrada; nem a administração consegue lê-la);</li>
+      <li>nome ou marca, apresentação, região onde atende e horários, que aparecem na sua página de vendedor;</li>
+      <li>seu número de WhatsApp. Ele nunca aparece escrito nas páginas: só abre a conversa quando alguém toca em “Consultar no WhatsApp”, e só se você autorizou isso. Você pode retirar a autorização quando quiser, no Perfil, e o contato some na hora;</li>
+      <li>seus anúncios, com título, preço, descrição e fotos.</li>
+    </ul>
+    <p>Quem entra na conta recebe um cookie de sessão para continuar conectado. Ele não serve para rastrear.</p>
+
+    <h2 class="t-2">Por que usamos seus dados</h2>
+    <ul>
+      <li>Mostramos seu WhatsApp para quem quer comprar porque você autorizou (consentimento). Você marca a autorização no cadastro ou no Perfil e pode desmarcar quando quiser.</li>
+      <li>Fazemos funcionar o que você pediu ao se cadastrar (execução do serviço): conta, anúncios, página de vendedor, aprovação do primeiro anúncio e recuperação de senha.</li>
+      <li>Mantemos a vitrine segura e funcionando (legítimo interesse): limite de tentativas, cookies técnicos, contagens de uso, tratamento de denúncias e registros do servidor (logs), sempre com o mínimo de dados.</li>
+    </ul>
+
+    <h2 class="t-2">Por quanto tempo guardamos</h2>
+    <ul>
+      <li>Conta e anúncios: enquanto a conta existir. Quando você exclui a conta, eles são apagados na hora.</li>
+      <li>Limite de tentativas: até {{ rate_limit_hours }} horas. Guardamos um código do IP, do e-mail digitado ao entrar ou da conta, de todos que enviam formulário ou tocam em “Consultar no WhatsApp”, inclusive de quem denuncia uma oferta.</li>
+      <li>Buscas sem resultado: o termo e a contagem do dia ficam {{ search_miss_days }} dias.</li>
+      <li>Denúncias: o texto escrito por quem denunciou fica até {{ report_details_days }} dias depois de a denúncia ser tratada e então é apagado. O motivo e as datas ficam.</li>
+      <li>Sessão: o cookie vale até {{ session_days }} dias ou até você sair; as sessões vencidas são apagadas.</li>
+      <li>Registros do servidor (logs) e cópias de segurança: os registros do site não guardam IP, o que foi buscado nem links de troca de senha. O servidor onde o site roda pode ter registros e cópias de segurança próprios, que seguem a política do servidor definida pelo responsável.</li>
+    </ul>
+
+    <h2 class="t-2">O código do IP e do e-mail</h2>
+    <p>Para limitar abusos, não guardamos seu IP nem seu e-mail como estão: guardamos um código embaralhado deles. Quem tem a chave do site ainda conseguiria descobrir o original, então esse código continua sendo dado pessoal (a lei chama isso de pseudonimização). Por isso ele é apagado em até {{ rate_limit_hours }} horas.</p>
+
+    <h2 class="t-2">Com quem compartilhamos</h2>
+    <p>Não vendemos nem cedemos dados. Eles ficam no servidor do site e, se houver, no serviço de armazenamento de fotos e no provedor que envia o e-mail de recuperação de senha. Quando alguém toca em “Consultar no WhatsApp”, a conversa acontece no WhatsApp, sob as regras dele.</p>
+
+    <h2 class="t-2">Denúncias</h2>
+    <p>Quem denuncia uma oferta não precisa se identificar. Guardamos o motivo e o texto opcional, que só a administração vê. Não coloque dados pessoais no texto.</p>
+
+    <h2 class="t-2">Como excluir sua conta</h2>
+    <p>Entre na sua conta, abra “Perfil” e escolha “Excluir minha conta…”. Você confirma com a senha. Seus anúncios saem da vitrine na hora e seus dados são apagados. Não dá para desfazer.</p>
+    <p>Se não conseguir entrar, escreva para o contato indicado no início desta página.</p>
+
+    <p><a class="botao botao--secundario" href="{% url 'catalog:home' %}">Voltar para o início</a></p>
+  </article>
+{% endblock %}

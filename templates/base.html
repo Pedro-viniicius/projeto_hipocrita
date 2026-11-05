@@ -1,0 +1,78 @@
+{% load static %}<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1F4171">
+  <title>{% block title %}Pão de Cada Dia{% endblock %}</title>
+  <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'fontes/source-sans-3-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fontes/barlow-condensed-600.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body{% block body_attrs %}{% endblock %}>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="cabecalho">
+    <div class="container cabecalho__barra">
+      <a class="marca" href="{% url 'catalog:home' %}" aria-label="Pão de Cada Dia, ir para o início">
+        {% include "components/logo.html" %}
+        <span class="marca__nome">Pão de Cada Dia</span>
+      </a>
+      <nav class="cabecalho__nav" aria-label="Conta">
+        {% if user.is_authenticated %}
+          {% if user.is_staff %}
+            <a href="{% url 'moderation:approvals' %}">Administração</a>
+          {% else %}
+            <a href="{% url 'seller:dashboard' %}">Meus anúncios</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'accounts:login' %}">Vender aqui</a>
+        {% endif %}
+      </nav>
+    </div>
+    {% block faixa %}{% endblock %}
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <div class="container{% block main_classes %}{% endblock %}">
+      {% block antes_mensagens %}{% endblock %}
+      {% if messages %}
+        <div class="mensagens">
+          {% for message in messages %}
+            {% include "components/aviso.html" with tipo=message.level_tag texto=message %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape__corpo">
+      <p class="rodape__marca"><strong>Pão de Cada Dia</strong> · Campus Paraíso · MG</p>
+      <p class="rodape__slogan">Pra sobreviver ao Cálculo.</p>
+      <nav aria-label="Rodapé">
+        <ul class="rodape__links">
+          {% if user.is_authenticated %}
+            <li><a href="{% if user.is_staff %}{% url 'moderation:approvals' %}{% else %}{% url 'seller:dashboard' %}{% endif %}">{% if user.is_staff %}Administração{% else %}Meus anúncios{% endif %}</a></li>
+            <li>
+              <form method="post" action="{% url 'accounts:logout' %}" class="rodape__sair">
+                {% csrf_token %}
+                <button type="submit" class="botao botao--link">Sair</button>
+              </form>
+            </li>
+          {% else %}
+            <li><a href="{% url 'accounts:login' %}">Vender aqui</a></li>
+            <li><a href="{% url 'accounts:login' %}">Entrar</a></li>
+          {% endif %}
+          <li><a href="{% url 'core:privacy' %}">Privacidade</a></li>
+        </ul>
+      </nav>
+      <p class="legenda">A ordem das ofertas muda todo dia, para todo mundo aparecer.</p>
+    </div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

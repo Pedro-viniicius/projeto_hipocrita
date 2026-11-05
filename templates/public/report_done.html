@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Denúncia enviada · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="pagina-estreita fluxo">
+    <h1 class="t-1">Denúncia enviada</h1>
+    {% include "components/aviso.html" with tipo="success" texto=ok_text %}
+    <p><a class="botao botao--secundario botao--bloco-mobile" href="{{ back_url }}">{% if back_to_offer %}Voltar para a oferta{% else %}Ir para o início{% endif %}</a></p>
+  </section>
+{% endblock %}

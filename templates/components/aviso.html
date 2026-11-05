@@ -1,0 +1,7 @@
+{% comment %}
+Mensagem de feedback. Contexto: tipo (success | info | warning | error; qualquer outro vira info), texto.
+Erro usa role="alert"; os demais role="status". Para conteúdo rico, escreva o mesmo markup à mão.
+{% endcomment %}<div class="aviso aviso--{{ tipo|default:'info' }}" role="{% if tipo == 'error' %}alert{% else %}status{% endif %}">
+  {% if tipo == 'success' %}{% include "components/icone.html" with nome="circulo-check" %}{% elif tipo == 'warning' %}{% include "components/icone.html" with nome="alerta-triangulo" %}{% elif tipo == 'error' %}{% include "components/icone.html" with nome="alerta-circulo" %}{% else %}{% include "components/icone.html" with nome="info" %}{% endif %}
+  <p class="aviso__texto">{{ texto }}</p>
+</div>

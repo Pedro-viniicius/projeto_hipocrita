@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Excluir conta · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="conta">
+    <h1>Excluir sua conta?</h1>
+    {% if limit_message %}
+      <div class="aviso aviso--error" role="alert">{% include "components/icone.html" with nome="alerta-circulo" %}<p class="aviso__texto">{{ limit_message }}</p></div>
+    {% else %}
+      {% include "accounts/_form_errors.html" %}
+    {% endif %}
+    <div class="aviso aviso--warning">
+      {% include "components/icone.html" with nome="alerta-triangulo" %}
+      <ul>
+        <li>Seus anúncios saem da vitrine agora.</li>
+        <li>Sua página de vendedor deixa de existir.</li>
+        <li>Seu contato deixa de aparecer.</li>
+        <li>Não dá para desfazer.</li>
+      </ul>
+    </div>
+    <a class="botao botao--secundario" href="{{ back_url }}">Voltar, não excluir</a>
+    <form method="post" action="{% url 'accounts:delete' %}" class="formulario" {% include "accounts/_form_texts.html" %}>
+      {% csrf_token %}
+      {% for field in form %}
+        {{ field.as_field_group }}
+      {% endfor %}
+      <button type="submit" class="botao botao--perigo">Excluir minha conta para sempre</button>
+    </form>
+  </section>
+{% endblock %}
+{% block scripts %}{% include "accounts/_scripts.html" %}{% endblock %}

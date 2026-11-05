@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{% if form.errors or rate_limited %}Erro: {% endif %}Denunciar oferta · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="pagina-form fluxo">
+    <h1 class="t-1">Denunciar oferta</h1>
+    <p class="legenda">{{ offer.title }} · {{ offer.seller.display_name }}</p>
+    {% if rate_limited %}
+      {% include "components/aviso.html" with tipo="error" texto=rate_limited_text %}
+    {% else %}
+      {% include "accounts/_form_errors.html" %}
+    {% endif %}
+    <p class="legenda">Você não precisa se identificar. Campos sem “(opcional)” são obrigatórios.</p>
+    <form class="form" method="post" action="{% url 'report:create' pk=offer.pk %}" novalidate>
+      {% csrf_token %}
+      {% for field in form %}{{ field.as_field_group }}{% endfor %}
+      <div class="acoes-form">
+        <button class="botao botao--primario botao--bloco-mobile" type="submit">Enviar denúncia</button>
+        <a class="botao botao--link" href="{{ offer_url }}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

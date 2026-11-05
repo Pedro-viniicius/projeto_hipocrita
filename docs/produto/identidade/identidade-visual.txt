@@ -1,0 +1,270 @@
+01 — MARCA
+
+
+Logo e conceito                                                                                                Identidade visual · v1 · novembro de 2026
+
+
+                                                                      CONCEITO
+
+                                                                      A fatia de pão vira balão de conversa: é ali que se negocia o pão de cada
+              COMPRA E VENDA ENTRE ESTUDANTES
+                                                                      dia — o bolo de pote, a apostila usada, o freela que paga a xerox. Os três
+                                                                      pontos são, ao mesmo tempo, o “digitando…” do chat e o miolo do pão.
+
+                                                                      VERSÕES
+
+
+
+                                                                                 PÃO DE CADA DIA                        PÃO DE CADA DIA
+
+                                   PÃO DE                               Positiva · fundos claros                Negativa · modo noturno, ciano do ICTIN
+
+
+
+
+                                   CADA DIA                                      PÃO DE CADA DIA
+                                                                        Sobre verde · campanhas e “vendido!”
+                                                                                                                        PÃO DE CADA DIA
+                                                                                                                Monocromática · impressão e xerox
+
+
+
+      Pra sobreviver ao Cálculo.                                      ÍCONE DO APP E AVATAR
+
+                                                                                                                   Tamanho mínimo: símbolo 16 px,
+                                                                                                                   assinatura 96 px de largura. Abaixo de
+                                                                                                                   24 px, os pontos saem. Área de
+                                                                                                                   proteção: a altura de um ponto em
+                                                                                                                   volta de tudo.
+
+
+
+
+      Assinatura principal · versão empilhada   CAMPUS PARAÍSO · MG
+02 — CORES
+                                                                                                                       Herdada da UFLA e do ICTIN. O azul lidera, o verde confirma, o ciano só acende
+Paleta                                                                                                                                                                                     no escuro.
+
+
+
+    PRIMÁRIA                                                           CONFIRMAÇÃO                                     PROFUNDIDADE                                 SINAL
+
+    Azul Lavras                                                        Verde Campus                                    Noite ICTIN                                  Ciano Circuito
+
+
+                                                                                                                                                                    Online, foco, novidade. Só
+    Cabeçalhos, botões principais, balões que você                                                                                                                  sobre fundo escuro.
+    envia.                                                             Preço, “fechar negócio”, vendido.               Modo noturno e telas de destaque.            #2EC4EA · RGB 46 196 234 ·
+    #1F4171 · RGB 31 65 113 · azul da UFLA                             #06713F · RGB 6 113 63 · verde da UFLA          #050C45 · RGB 5 12 69 · fundo do ICTIN       brilho do ICTIN
+
+
+
+NEUTROS E TONS DE APOIO                                                                                                                       ESTADOS
+
+
+                                                                                                                                                 Disponível                                 #06713F / #E3F2EA
+
+
+
+Tinta                Grafite             Névoa             Papel                 Branco               Azul 50          Verde 50                  Reservado                                  #9A5B00 / #FFF4E0
+#0F1A2E              #4A5468             #E4E9F0           #F5F7FA               #FFFFFF              #E8EEF7          #E3F2EA
+Texto principal      Texto de apoio      Linhas, campos    Fundo do app          Cartões              Balão recebido   Fundo de preço
+                                                                                                                                                 Anúncio removido                          #B42318 / #FDECEA
+
+
+
+PROPORÇÃO DE USO                                                                                                                              CONTRASTE (WCAG)
+
+                                                                                                                                              Branco / Azul                 10,2 : 1 · AAA
+                                                                                                                                              Branco / Verde                6,1 : 1 · AA
+Papel e branco 58%     Azul Lavras 24%   Tinta 8%    Verde Campus 6%      Noite ICTIN 3%   Ciano 1%                                           Ciano / Noite                 8,9 : 1 · AAA
+                                                                                                                                              Ciano / Branco                2,1 : 1 · não usar
+03 — TIPOGRAFIA
+
+
+Duas famílias, um tom                                                                                                  Gratuitas no Google Fonts, com acentuação completa do português.
+
+                                                                       ESCALA
+
+
+
+
+                                                       Aa
+   TÍTULOS E RÓTULOS
+
+   Barlow Condensed                                                    Display
+                                                                       Barlow Cond. 700 · 64/60              VENDEU NO INTERVALO
+                                                                       Título 1
+                                                                       Barlow Cond. 600 · 40/44              Apostilas de Cálculo I
+                                                                       Título 2
+                                                                       Barlow Cond. 600 · 28/32
+                                                                                                             Conversas recentes
+   ÁÃÂÇÉÊÍÓÕÚ 0123456789 R$
+   Condensada como a sinalização do campus. Pesos 500, 600 e 700.      Rótulo
+   Rótulos sempre em caixa alta.                                                                             MAIS PEDIDOS HOJE
+                                                                       Barlow Cond. 600 · 14/16 · +14%
+
+
+                                                                       Mensagem
+                                                                                                             Oi! Ainda tem o bolo de pote de ninho com morango? Saio da aula às 10h.
+                                                                       Source Sans 3 400 · 17/24
+
+
+
+
+                                                     Aa
+   TEXTO E INTERFACE
+
+   Source Sans 3                                                       Nome e ênfase
+                                                                                                             Ana Beatriz respondeu sua oferta
+                                                                       Source Sans 3 600 · 17/24
+
+
+                                                                       Legenda
+                                                                                                             Visto às 9:42 · Retirada no campus
+                                                                       Source Sans 3 400 · 14/20
+
+
+                                                                       Preço
+                                                                       Source Sans 3 700 · 22/24 · tabular
+                                                                                                             R$ 8,00
+   ÁÃÂÇÉÊÍÓÕÚ 0123456789 R$
+   Confortável em conversa longa e em tela pequena. Pesos 400, 600 e
+   700. Números tabulares nos preços.
+04 — COMPONENTES
+                                                                                                                              Cantos de 12 px, alvos de toque de no mínimo 44 px e quase nenhuma sombra:
+Peças da interface                                                                                                                                             sóbrio como secretaria, rápido como cantina.
+
+BOTÕES                                                                    CARTÃO DE ANÚNCIO                                                    CONVERSA
+
+
+          Enviar oferta                            Fechar negócio
+                                                                                                                                                    Tenho sim! Levo no intervalo das 10h, antes
+                                                                                                                                                    do Cálculo.
+          Ver anúncio                                Agora não
+                                                                                                                                                  9:41 · recebida
+                                                                                                    Foto do produto
+
+                                 Ícones de traço 2 px, cantos redondos.                                                                                                             Fechado, separa 2 pra mim?
+
+                                                                                                                                                                                                           9:42 · lida
+
+CATEGORIAS                                                                       Disponível                                      COMIDA
+                                                                                                                                                     PROPOSTA                                      aguardando você
+
+  Tudo          Comida             Apostilas e livros                        Bolo de pote — ninho com morango
+                                                                                 Ana B. · retirada no campus                                         2 × Bolo de pote                                   R$ 16,00
+  Serviços         Eletrônicos               Moradia
+                                                                             R$ 8,00                                   Chamar no chat                               Ajustar                    Confirmar
+
+SELOS DE STATUS
+
+   Disponível          Reservado              Vendido      NOVO HOJE                                                                                           Os pontos do logo viram o “digitando…”
+                                                                          BUSCA E AVATAR
+
+                                                                          O que você procura?
+MEDIDAS
+
+Raios             8 selos · 12 botões e campos · 16 cartões · 18 balões
+                  · 999 chips
+Espaços           4 · 8 · 12 · 16 · 24 · 32 · 48                          Campo em foco: borda Azul Lavras e halo Azul 50.
+
+Toque             mínimo 44 × 44                                                                 Iniciais em Barlow Condensed. Ponto verde:
+                                                                            AB          JP       online.
+
+
+                                                                                                                                                  Mensagem
+      PÃO DE CADA DIA                                PN
+
+O que tem no campus hoje?
+
+
+ Buscar
+ no
+ campus
+  Tudo       Comida           Apostilas         Serviços
+
+
+MAIS PEDIDOS HOJE                          Campus Paraíso
+
+
+            Bolo de pote — ninho
+                                              R$ 8,00
+            com morango
+                                             Disponível
+            Ana B. · intervalo das 10h
+
+
+            Apostila de Cálculo I
+                                             R$ 25,00
+            resolvida
+                                             Reservado
+            João P. · usada, sem rasuras
+
+
+            Aula de Geometria
+            Analítica                        R$ 30,00
+            Lucas M. · 1 hora, na            Disponível
+            biblioteca
+
+
+            Brigadeiro gourmet,
+                                             R$ 12,00
+            caixa com 4
+                                               Vendido
+            Bruna S. · entrega no bloco
+
+
+
+
+                    2
+
+  Vitrine     Conversas         Vender           Perfil
+                 Ana B.
+         AB
+                 online agora
+
+
+         Bolo de pote — ninho com
+         morango                                Disponível
+         R$ 8,00
+
+
+                           HOJE
+
+
+              Oi! Ainda tem o de ninho com
+              morango?
+
+                                                          9:38
+
+
+  Tenho sim! Levo no intervalo das 10h,
+  antes do Cálculo.
+
+9:41
+
+
+                          Fechado, separa 2 pra mim?
+
+                                                9:42 · lida
+
+
+  PROPOSTA DA ANA                             9:43
+
+
+  2 × Bolo de pote                     R$ 16,00
+  Retirada às 10h · local a combinar
+
+
+         Ajustar                  Confirmar
+
+
+
+
+  Ana
+  B.
+  está
+  digitando
+Mensagem
+

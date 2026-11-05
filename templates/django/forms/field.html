@@ -1,0 +1,23 @@
+{% comment %}
+Campo de formulário acessível. Ordem: rótulo, dica, erros, controle (caixa: controle antes do rótulo).
+Os ids de dica e de erro (`<id>_helptext`, `<id>_error`) coincidem com o aria-describedby que o Django monta.
+Classes: .campo, .campo--caixa, .campo--opcoes, .campo--arquivo, .campo--erro. Marca "(opcional)" em campo não obrigatório.
+{% endcomment %}<div class="campo{% if field.widget_type == 'checkbox' %} campo--caixa{% elif field.widget_type == 'radioselect' %} campo--opcoes{% elif field.widget_type == 'clearablefile' or field.widget_type == 'file' or field.widget_type == 'multiplefile' %} campo--arquivo{% endif %}{% if field.errors %} campo--erro{% endif %}">
+  {% if field.use_fieldset %}
+  <fieldset{% if field.aria_describedby %} aria-describedby="{{ field.aria_describedby }}"{% endif %}>
+    <legend>{{ field.label }}{% if not field.field.required %} <span class="opcional">(opcional)</span>{% endif %}</legend>
+    {% if field.help_text %}<p class="legenda" id="{{ field.helptext_id }}">{{ field.help_text|safe }}</p>{% endif %}
+    {% if field.errors %}<ul class="erro" id="{{ field.error_id }}">{% for error in field.errors %}<li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>{{ error }}</span></li>{% endfor %}</ul>{% endif %}
+    {{ field }}
+  </fieldset>
+  {% elif field.widget_type == 'checkbox' %}
+    <div class="campo__caixa">{{ field }}<label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="opcional">(opcional)</span>{% endif %}</label></div>
+    {% if field.help_text %}<p class="legenda" id="{{ field.helptext_id }}">{{ field.help_text|safe }}</p>{% endif %}
+    {% if field.errors %}<ul class="erro" id="{{ field.error_id }}">{% for error in field.errors %}<li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>{{ error }}</span></li>{% endfor %}</ul>{% endif %}
+  {% else %}
+    {% if field.label %}<label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="opcional">(opcional)</span>{% endif %}</label>{% endif %}
+    {% if field.help_text %}<p class="legenda" id="{{ field.helptext_id }}">{{ field.help_text|safe }}</p>{% endif %}
+    {% if field.errors %}<ul class="erro" id="{{ field.error_id }}">{% for error in field.errors %}<li>{% include "components/icone.html" with nome="alerta-triangulo" %}<span>{{ error }}</span></li>{% endfor %}</ul>{% endif %}
+    {{ field }}
+  {% endif %}
+</div>

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <p><a class="voltar" href="{{ back_url }}">{% include "components/icone.html" with nome="seta-esquerda" %}Voltar para a lista</a></p>
+
+  <article class="oferta-pagina">
+    <div class="oferta-pagina__cabeca">
+      <h1 class="t-1">{{ offer.title }}</h1>
+      {% if state %}<p>{% include "components/selo.html" with state=state %}</p>{% endif %}
+      <p>{% if price_from %}<span class="legenda">A partir de</span> {% endif %}<span class="preco{% if price_struck %} preco--riscado{% endif %}">{{ price_label }}</span></p>
+      <p class="oferta-pagina__retirada">{% include "components/icone.html" with nome="pino" %}<span><span class="so-leitor">Retirada ou entrega: </span>{{ offer.fulfillment }}</span></p>
+    </div>
+
+    <div class="oferta-pagina__fotos">
+      {% if photos %}
+        {% with first=photos.0 %}{% include "components/foto.html" with url=first.url w=first.w h=first.h alt=first.alt prioridade=True classe="foto--pagina" %}{% endwith %}
+        {% if photos|length > 1 %}
+          <div class="oferta-pagina__miniaturas">
+            {% for photo in photos|slice:"1:" %}{% include "components/foto.html" with url=photo.url w=photo.w h=photo.h alt=photo.alt classe="foto--pagina" %}{% endfor %}
+          </div>
+        {% endif %}
+      {% else %}
+        {% include "components/foto.html" with classe="foto--pagina" legenda=True %}
+      {% endif %}
+
+      {% if food_rows %}
+        <section class="oferta-pagina__alimento fluxo" aria-labelledby="alimento-titulo">
+          <h2 class="t-2" id="alimento-titulo">Sobre este alimento</h2>
+          <dl class="alimento">
+            {% for row in food_rows %}
+              <dt>{{ row.label }}</dt>
+              <dd{% if row.missing %} class="italico"{% endif %}>{% if row.missing %}{{ food_missing_label }}{% else %}{{ row.value }}{% endif %}</dd>
+            {% endfor %}
+          </dl>
+          <p class="legenda">Informado por quem vende. Confirme com a pessoa se tiver alergia.</p>
+        </section>
+      {% endif %}
+    </div>
+
+    <div class="oferta-pagina__conteudo">
+      {% if offer.description %}<p class="texto-corrido">{{ offer.description|linebreaksbr }}</p>{% endif %}
+
+      {% if can_contact %}
+        <form class="form oferta-contato" method="get" action="{% url 'catalog:offer_whatsapp' pk=offer.pk %}" target="_blank" rel="nofollow noopener">
+          {% if variants %}
+            <fieldset>
+              <legend>Escolha uma opção <span class="opcional">(opcional)</span></legend>
+              {% for variant in variants %}
+                <label class="opcao" for="variacao-{{ variant.id }}"><input type="radio" id="variacao-{{ variant.id }}" name="variacao" value="{{ variant.id }}"><span>{{ variant.name }}</span><span class="opcao__preco">{{ variant.price_label }}</span></label>
+              {% endfor %}
+            </fieldset>
+          {% endif %}
+          <button class="botao botao--primario botao--bloco-mobile" type="submit">{% include "components/icone.html" with nome="mensagem" %}Consultar no WhatsApp</button>
+          <p class="legenda">Abre em outra aba</p>
+          {% include "components/aviso_contato.html" %}
+        </form>
+      {% else %}
+        {% include "components/aviso.html" with tipo="info" texto=status_message %}
+        <p><a href="{{ seller_url }}">{{ seller_other_label }}</a></p>
+      {% endif %}
+
+      <section class="vendedor-bloco" aria-label="Quem vende">
+        <span class="vendedor-bloco__iniciais" aria-hidden="true">{{ seller_initials }}</span>
+        <div>
+          <p class="legenda">Vendido por</p>
+          <p class="texto-forte"><a href="{{ seller_url }}">{{ seller.display_name }}</a></p>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <p class="oferta-pagina__denunciar"><a class="botao botao--link" href="{% url 'report:create' pk=offer.pk %}">{% include "components/icone.html" with nome="bandeira" %}Denunciar esta oferta</a></p>
+{% endblock %}

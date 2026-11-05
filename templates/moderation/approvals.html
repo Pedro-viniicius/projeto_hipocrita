@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load catalog_ui %}
+{% block title %}Aprovações · Administração · Pão de Cada Dia{% endblock %}
+{% block content %}
+  {% include "moderation/_nav.html" %}
+  <h1>Aprovações</h1>
+  <p class="legenda">Primeiro anúncio de cada vendedor. Ao aprovar, os próximos anúncios dele já saem publicados.</p>
+  {% if rows %}
+    <div class="tabela-rolavel" tabindex="0" role="region" aria-label="Tabela, role para o lado para ver todas as colunas">
+      <table class="tabela">
+        <caption class="so-leitor">Anúncios aguardando aprovação, do mais antigo para o mais novo</caption>
+        <thead>
+          <tr>
+            <th scope="col">Foto</th>
+            <th scope="col">Anúncio</th>
+            <th scope="col">Vendedor</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Preço</th>
+            <th scope="col">Enviado em</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr id="anuncio-{{ row.offer.pk }}">
+              <td>{% include "components/foto.html" with url=row.photo_url w=480 h=480 alt="" classe="foto--miniatura" %}</td>
+              <td>
+                <strong>{{ row.offer.title }}</strong><br>
+                <a href="{% url 'moderation:offer_preview' row.offer.pk %}">Ver como visitante<span class="so-leitor">: {{ row.offer.title }}</span></a>
+              </td>
+              <td>{{ row.offer.seller.display_name }}</td>
+              <td>{{ row.offer.category.name }}</td>
+              <td>{% if row.price_from %}A partir de {% endif %}{{ row.price_cents|brl }}</td>
+              <td>{{ row.offer.created_at|date:"d/m/Y H:i" }}</td>
+              <td>
+                <div class="acoes-form">
+                  <form method="post" action="{% url 'moderation:offer_approve' row.offer.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="botao botao--confirmar">Aprovar<span class="so-leitor"> {{ row.offer.title }}</span></button>
+                  </form>
+                  <form method="post" action="{% url 'moderation:offer_hide' row.offer.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="botao botao--secundario">Ocultar<span class="so-leitor"> {{ row.offer.title }}</span></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    {% include "components/vazio.html" with titulo="Nada esperando aprovação." icone="circulo-check" %}
+  {% endif %}
+{% endblock %}

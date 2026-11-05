@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Entrar · Pão de Cada Dia{% endblock %}
+{% block content %}
+  <section class="conta">
+    <h1>Entrar</h1>
+    {% if limit_message %}
+      <div class="aviso aviso--error" role="alert">{% include "components/icone.html" with nome="alerta-circulo" %}<p class="aviso__texto">{{ limit_message }}</p></div>
+    {% else %}
+      {% include "accounts/_form_errors.html" %}
+    {% endif %}
+    <form method="post" action="{% url 'accounts:login' %}" class="formulario" {% include "accounts/_form_texts.html" %}>
+      {% csrf_token %}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      {% for field in form %}
+        {{ field.as_field_group }}
+      {% endfor %}
+      <button type="submit" class="botao botao--primario">Entrar</button>
+    </form>
+    {% if reset_enabled %}
+      <p><a href="{% url 'accounts:password_reset' %}">Esqueceu a senha?</a></p>
+    {% else %}
+      <p>Esqueceu a senha? {% if contact_email %}Para recuperar, fale com a administração pelo e-mail <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% else %}Por enquanto não dá para recuperar pelo site, e ainda não há um contato cadastrado para isso.{% endif %}</p>
+    {% endif %}
+    <p><a href="{% url 'accounts:signup' %}">Não tem conta? Cadastrar</a></p>
+  </section>
+{% endblock %}
+{% block scripts %}{% include "accounts/_scripts.html" %}{% endblock %}

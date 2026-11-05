@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Pão de Cada Dia">
+  <g fill="#1F4171">
+    <rect x="4" y="4" width="40" height="20" rx="10"/>
+    <rect x="10" y="16" width="28" height="22" rx="4"/>
+    <path d="M10 32 L8 44 L21 38 Z"/>
+  </g>
+  <g fill="#fff"><circle cx="17" cy="28" r="2.5"/><circle cx="24" cy="28" r="2.5"/><circle cx="31" cy="28" r="2.5"/></g>
+</svg>
