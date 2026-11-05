@@ -273,11 +273,11 @@ Ordem dos campos:
 5. **Descrição curta (opcional)** (ex.: "Feito no dia. Dá pra pedir sem leite.") 300 caracteres.
 6. **Retirada ou entrega** (ex.: "Retirada no bloco 3, no intervalo das 10h") 100 caracteres: alimenta o resumo do cartão.
 7. **Opções com preços diferentes (opcional)** (`fieldset`): 5 linhas fixas "Nome da opção" (ex.: "Ninho com morango") + "Preço" (ex.: "8,00"); linha vazia é ignorada; dica "Deixe em branco o que não usar."
-8. **Fotos (opcional)**: `<input type="file" accept="image/jpeg,image/png,image/webp" multiple>`, dica "Até 3 fotos, cada uma de até 5 MB (JPG, PNG ou WebP)."; na edição, cada foto atual aparece em miniatura com caixa "Remover esta foto". Texto alternativo é o título.
+8. **Fotos (opcional)**: `<input type="file" accept="image/jpeg,image/png,image/webp" multiple>`, dica `anuncio.fotos_dica` (limite por foto configurável, `MAX_UPLOAD_MB`: 1 MB na Vercel). Com JS, `static/js/fotos.js` reduz cada foto no navegador (JPEG, lado maior até 1280 px) antes do envio; sem JS ou se a foto não puder ser lida, vale o limite do servidor. Entre o campo e os botões ficam dois elementos escondidos que o JS mostra: **status** "Preparando as fotos…" (`role="status"`, texto de apoio, enquanto processa; o botão de envio fica `aria-disabled="true"` e o envio é bloqueado) e **aviso de total grande** (`.aviso--erro`, `role="alert"`, `tabindex="-1"`; se o total ainda passar do teto, o botão fica `aria-disabled` e, ao tentar enviar, o foco vai para o aviso). Os dois somem sozinhos quando a situação muda (nova escolha de fotos); na edição, cada foto atual aparece em miniatura com caixa "Remover esta foto". Texto alternativo é o título.
 9. **Só para oferta do dia** (`fieldset` com legenda "Só para oferta do dia"): "Horário de encerramento (opcional)" (`type="time"`, dica "Se deixar em branco, vale até 23h59.") e caixa "Já confirmar como disponível hoje" (marcada por padrão).
 10. **Só para comidas e doces** (`fieldset`): "Porção" (ex.: "1 pote de 200 g"), "Ingredientes" (ex.: "Leite, ninho, morango, açúcar."), "Alergênicos" (ex.: "Contém leite. Pode conter traços de amendoim."); todos opcionais, com dica comum "Se você não preencher, a página mostra “Não informado pelo vendedor”. Escreva só o que você tem certeza."
 11. Botões.
-- Estados: erro por campo (2.8) e resumo no topo; erro de upload ("Esta foto passou de 5 MB. Escolha uma menor." / "Este arquivo não é uma foto válida."); envio lento: texto "Enviando fotos, pode demorar um pouco…" abaixo dos botões quando o formulário é enviado (JS), caso contrário o navegador mostra o progresso. Sucesso novo: "Anúncio enviado para análise. Ele aparece para todo mundo quando a equipe aprovar." (primeiro anúncio) ou "Anúncio publicado." Edição: "Alterações salvas."
+- Estados: erro por campo (2.8) e resumo no topo; processando fotos (botão aria-disabled + "Preparando as fotos…"); total grande ("As fotos escolhidas ainda ficaram pesadas demais para enviar. Escolha menos fotos ou fotos menores."); erro de upload ("Esta foto passou de {mb} MB. Escolha uma menor." / "Este arquivo não é uma foto válida."); envio lento: texto "Enviando fotos, pode demorar um pouco…" abaixo dos botões quando o formulário é enviado (JS), caso contrário o navegador mostra o progresso. Sucesso novo: "Anúncio enviado para análise. Ele aparece para todo mundo quando a equipe aprovar." (primeiro anúncio) ou "Anúncio publicado." Edição: "Alterações salvas."
 - Acesso a anúncio de outro vendedor: 404 (3.10).
 - 1280: mesma coluna de 40rem centrada; fotos e opções em grade de 2 colunas.
 
@@ -469,7 +469,9 @@ Layout central, `h1` + 1 frase + 1 ação + (opcional) `.legenda` com código. S
 | anuncio.opcao_nome_ex | Exemplo: Ninho com morango |
 | anuncio.opcao_preco | Preço da opção |
 | anuncio.fotos | Fotos |
-| anuncio.fotos_dica | Até 3 fotos, cada uma de até 5 MB (JPG, PNG ou WebP). |
+| anuncio.fotos_dica | Até 3 fotos (JPG, PNG ou WebP), de até {mb} MB cada. Se forem maiores, o site tenta diminuí-las antes de enviar. |
+| anuncio.fotos_preparando | Preparando as fotos… |
+| anuncio.fotos_total_grande | As fotos escolhidas ainda ficaram pesadas demais para enviar. Escolha menos fotos ou fotos menores. |
 | anuncio.fotos_reenviar | Se o formulário voltar com erro, escolha as fotos de novo. |
 | anuncio.foto_remover | Remover esta foto |
 | anuncio.so_dia | Só para oferta do dia |
@@ -497,7 +499,7 @@ Layout central, `h1` + 1 frase + 1 ação + (opcional) `.legenda` com código. S
 | erro.whatsapp | Digite um WhatsApp válido com DDD. Exemplo: (35) 91234-5678 |
 | erro.preco | Digite um valor em reais. Exemplo: 8,50 |
 | erro.horario | Digite um horário válido. Exemplo: 18:00 |
-| erro.foto_grande | Esta foto passou de 5 MB. Escolha uma menor. |
+| erro.foto_grande | Esta foto passou de {mb} MB. Escolha uma menor. |
 | erro.foto_invalida | Este arquivo não é uma foto válida. Use JPG, PNG ou WebP. |
 | erro.fotos_demais | Você pode enviar até 3 fotos. |
 | erro.email_usado | Já existe uma conta com este e-mail. Tente entrar. |
@@ -657,5 +659,5 @@ Projeto vazio: tudo é novo. Previstos (nomes sujeitos à stack): `static/css/ap
 ## Perguntas em aberto
 
 - Sem autorização do número, o anúncio pode ser publicado (como na decisão 17) ou o vendedor deve ser impedido de publicar? Sugestão: permitir, com alerta no formulário "Sem liberar o WhatsApp, ninguém consegue falar com você por aqui."
-- Tamanho máximo de foto: assumido 5 MB; o `arquiteto`/`dev` confirmam.
+- Tamanho máximo de foto: configurável (`MAX_UPLOAD_MB`; 1 MB na Vercel, com redução no navegador).
 - Domínio e endereço final do link da página do vendedor (para o exemplo e o campo copiar).

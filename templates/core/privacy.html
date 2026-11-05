@@ -35,18 +35,18 @@
     <h2 class="t-2">Por quanto tempo guardamos</h2>
     <ul>
       <li>Conta e anúncios: enquanto a conta existir. Quando você exclui a conta, eles são apagados na hora.</li>
-      <li>Limite de tentativas: até {{ rate_limit_hours }} horas. Guardamos um código do IP, do e-mail digitado ao entrar ou da conta, de todos que enviam formulário ou tocam em “Consultar no WhatsApp”, inclusive de quem denuncia uma oferta.</li>
+      <li>Limite de tentativas: apagamos em até {{ rate_limit_hours }} horas; se a limpeza automática falhar, em até {{ rate_limit_max_days_if_scheduler_fails }} dias. Guardamos um código do IP, do e-mail digitado ao entrar ou da conta, de todos que enviam formulário ou tocam em “Consultar no WhatsApp”, inclusive de quem denuncia uma oferta.</li>
       <li>Buscas sem resultado: o termo e a contagem do dia ficam {{ search_miss_days }} dias.</li>
       <li>Denúncias: o texto escrito por quem denunciou fica até {{ report_details_days }} dias depois de a denúncia ser tratada e então é apagado. O motivo e as datas ficam.</li>
       <li>Sessão: o cookie vale até {{ session_days }} dias ou até você sair; as sessões vencidas são apagadas.</li>
-      <li>Registros do servidor (logs) e cópias de segurança: os registros do site não guardam IP, o que foi buscado nem links de troca de senha. O servidor onde o site roda pode ter registros e cópias de segurança próprios, que seguem a política do servidor definida pelo responsável.</li>
+      <li>Registros do servidor (logs) e cópias de segurança: os registros que o nosso site mesmo faz não guardam IP, o que foi buscado nem links de troca de senha. Já a empresa que hospeda o site registra, por conta própria, cada acesso (endereço da página, inclusive o termo buscado, navegador e IP) e apaga esses registros no prazo dela, que é curto (na hospedagem atual, até 1 dia). O servidor onde o site roda pode ter registros e cópias de segurança próprios, que seguem a política do servidor definida pelo responsável.</li>
     </ul>
 
     <h2 class="t-2">O código do IP e do e-mail</h2>
-    <p>Para limitar abusos, não guardamos seu IP nem seu e-mail como estão: guardamos um código embaralhado deles. Quem tem a chave do site ainda conseguiria descobrir o original, então esse código continua sendo dado pessoal (a lei chama isso de pseudonimização). Por isso ele é apagado em até {{ rate_limit_hours }} horas.</p>
+    <p>Para limitar abusos, não guardamos seu IP nem seu e-mail como estão: guardamos um código embaralhado deles. Quem tem a chave do site ainda conseguiria descobrir o original, então esse código continua sendo dado pessoal (a lei chama isso de pseudonimização). Por isso ele é apagado em até {{ rate_limit_hours }} horas (em até {{ rate_limit_max_days_if_scheduler_fails }} dias, se a limpeza automática falhar).</p>
 
     <h2 class="t-2">Com quem compartilhamos</h2>
-    <p>Não vendemos nem cedemos dados. Eles ficam no servidor do site e, se houver, no serviço de armazenamento de fotos e no provedor que envia o e-mail de recuperação de senha. Quando alguém toca em “Consultar no WhatsApp”, a conversa acontece no WhatsApp, sob as regras dele.</p>
+    <p>Não vendemos nem cedemos dados. Eles ficam no servidor do site, na empresa de hospedagem e, se houver, no serviço de armazenamento de fotos e no provedor que envia o e-mail de recuperação de senha. A empresa de hospedagem e o serviço de armazenamento de fotos podem processar os dados fora do Brasil, como nos Estados Unidos. Quando alguém toca em “Consultar no WhatsApp”, a conversa acontece no WhatsApp, sob as regras dele.</p>
 
     <h2 class="t-2">Denúncias</h2>
     <p>Quem denuncia uma oferta não precisa se identificar. Guardamos o motivo e o texto opcional, que só a administração vê. Não coloque dados pessoais no texto.</p>

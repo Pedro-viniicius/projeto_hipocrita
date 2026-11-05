@@ -207,6 +207,10 @@ class OfferForm(NoLabelSuffixMixin, forms.Form):
             "position", "name"
         )
         self.fields["photos"].help_text = texts.PHOTOS_HELP.format(mb=settings.MAX_UPLOAD_MB)
+        # O static/js/fotos.js reduz as fotos no navegador até caberem neste limite e
+        # bloqueia o envio cujo total passaria do teto do corpo (MAX_REQUEST_BODY_BYTES).
+        self.fields["photos"].widget.attrs["data-max-mb"] = settings.MAX_UPLOAD_MB
+        self.fields["photos"].widget.attrs["data-max-photos"] = settings.MAX_PHOTOS_PER_OFFER
         self.fields["remove_photos"].choices = [(p.pk, str(p.pk)) for p in self.current_photos]
 
         for n in range(VARIANT_ROWS):

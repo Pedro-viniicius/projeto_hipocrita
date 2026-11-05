@@ -1,17 +1,20 @@
-"""Views do núcleo: saúde, robots, mídia local, privacidade, guia de estilos e erros."""
+"""Views do núcleo: saúde, limpeza agendada, robots, mídia, privacidade, estilos e erros."""
 
+import hmac
+import math
 from pathlib import PurePosixPath
 from types import SimpleNamespace
 
 from django import forms
 from django.conf import settings
 from django.contrib import messages
+from django.core.management import call_command
 from django.db import connection
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.template import loader
 from django.views.decorators.cache import never_cache
-from django.views.decorators.http import require_safe
+from django.views.decorators.http import require_GET, require_safe
 from django.views.static import serve
 
 from apps.core import retention
@@ -29,6 +32,40 @@ def healthz(request: HttpRequest) -> HttpResponse:
             cursor.execute("SELECT 1")
     except Exception:
         return HttpResponse("db indisponível", status=503, content_type="text/plain")
+    return HttpResponse("ok", content_type="text/plain")
+
+
+@never_cache
+@require_GET
+def cleanup_cron(request: HttpRequest) -> HttpResponse:
+    """Roda o `cleanup_data` quando chamado pelo agendador (Vercel Cron, GitHub Actions).
+
+    Sem `CRON_SECRET` configurado a rota não existe (404). Com ele, exige o
+    cabeçalho `Authorization: Bearer <CRON_SECRET>`, comparado em tempo constante;
+    qualquer outro valor dá 401. A resposta é sempre "ok", sem as contagens: quem
+    chama não precisa saber o que foi apagado. A limpeza é idempotente, então uma
+    chamada repetida não faz mal.
+
+    Compara bytes: o servidor WSGI entrega o cabeçalho decodificado em latin-1
+    (PEP 3333), então voltar para latin-1 recupera os bytes enviados, que o agendador
+    manda em UTF-8. Assim um segredo fora do ASCII também funciona (o `check --deploy`
+    avisa, core.W002). Texto que não cabe em latin-1 não veio de um servidor real: 401.
+    """
+    secret = settings.CRON_SECRET
+    if not secret:
+        raise Http404
+    try:
+        received = request.headers.get("Authorization", "").encode("latin-1")
+    except UnicodeEncodeError:
+        received = b""
+    expected = f"Bearer {secret}".encode()
+    if not hmac.compare_digest(received, expected):
+        response = HttpResponse(
+            "não autorizado", status=401, content_type="text/plain; charset=utf-8"
+        )
+        response["WWW-Authenticate"] = "Bearer"
+        return response
+    call_command("cleanup_data")
     return HttpResponse("ok", content_type="text/plain")
 
 
@@ -81,6 +118,10 @@ def privacy(request: HttpRequest) -> HttpResponse:
         "controller_name": settings.PRIVACY_CONTROLLER_NAME,
         "contact_email": settings.PRIVACY_CONTACT_EMAIL,
         "rate_limit_hours": retention.RATE_LIMIT_HOURS,
+        # Em dias, arredondado para cima: a página nunca mostra prazo menor que o real.
+        "rate_limit_max_days_if_scheduler_fails": math.ceil(
+            retention.RATE_LIMIT_MAX_HOURS_IF_SCHEDULER_FAILS / 24
+        ),
         "search_miss_days": retention.SEARCH_MISS_DAYS,
         "report_details_days": retention.REPORT_DETAILS_DAYS,
         "session_days": settings.SESSION_COOKIE_AGE // 86400,

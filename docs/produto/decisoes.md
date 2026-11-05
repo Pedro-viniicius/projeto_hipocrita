@@ -44,7 +44,8 @@ Resolvem as perguntas em aberto da spec `docs/produto/specs/vitrine-mvp.md`:
 
 ## 2026-11-05 — Publicação na Vercel (plano `docs/produto/planos/publicar-vercel.md`)
 
-1. **Plano Hobby (gratuito).** O dono escolheu o Hobby sabendo que os termos da Vercel o restringem a uso pessoal não comercial e citam "advertising the sale of a product or service". **Risco aceito pelo dono:** a Vercel pode suspender o projeto; a saída é migrar para o Pro ou para o Docker (README). No Hobby o cron da Vercel roda no máximo 1 vez por dia, então a limpeza de hora em hora vem de um agendamento do GitHub Actions (etapa 7 do plano).
+1. **Plano Hobby (gratuito).** O dono escolheu o Hobby sabendo que os termos da Vercel o restringem a uso pessoal não comercial e citam "advertising the sale of a product or service". **Risco aceito pelo dono:** a Vercel pode suspender o projeto; a saída é migrar para o Pro ou para o Docker (README). No Hobby o cron da Vercel roda no máximo 1 vez por dia, então a limpeza frequente vem de um agendamento do GitHub Actions de 30 em 30 minutos (etapa 7 do plano; o Actions atrasa e pode ser desligado após 60 dias sem atividade).
 2. **Fotos de até 1 MB no servidor.** O navegador reduz as fotos antes de enviar (limite de 4,5 MB por requisição da Vercel). Sem JavaScript, foto acima de 1 MB é recusada com a mensagem do app.
 3. **Privacidade:** aprovado o texto que diz que a empresa de hospedagem registra cada acesso (página, termo buscado, navegador e IP) por conta própria, por prazo curto.
 4. **Dados fora do Brasil:** aceito que Vercel (logs de acesso) e Cloudflare R2 (fotos) processem dados; site e banco ficam em São Paulo.
+5. **Prazo dos contadores na privacidade (decisão do lead, rodada 2 da revisão):** a página diz "em até 24 horas; se a limpeza automática falhar, em até 2 dias". Na Vercel, o piso garantido é o cron diário (vence com 23 h + até ~25 h). Em VPS/Docker, o "2 dias" depende do cron de hora em hora do README estar ativo.

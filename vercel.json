@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["gru1"],
+  "ignoreCommand": "test \"$VERCEL_ENV\" != production",
+  "functions": {
+    "config/wsgi.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{docs/**,apps/**/tests/**,conftest.py,.claude/**}"
+    }
+  },
+  "crons": [{ "path": "/_tarefas/limpeza/", "schedule": "7 6 * * *" }]
+}

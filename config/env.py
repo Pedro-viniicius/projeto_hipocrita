@@ -66,6 +66,9 @@ def build_databases(env: Mapping[str, str], base_dir: Path) -> dict:
             "PASSWORD": env.get("POSTGRES_PASSWORD", ""),
             "CONN_MAX_AGE": env_int(env, "DB_CONN_MAX_AGE", 60),
             "CONN_HEALTH_CHECKS": True,
+            # Pooler em modo transação (PgBouncer, Neon): um cursor no servidor
+            # não sobrevive à troca de conexão entre transações.
+            "DISABLE_SERVER_SIDE_CURSORS": env_bool(env, "DB_DISABLE_SERVER_SIDE_CURSORS", False),
         }
     }
 
@@ -88,7 +91,11 @@ def build_storages(env: Mapping[str, str], media_root: Path) -> dict:
             raise ImproperlyConfigured("STORAGE_BACKEND=s3 exige AWS_STORAGE_BUCKET_NAME.")
         # As credenciais (AWS_ACCESS_KEY_ID e AWS_SECRET_ACCESS_KEY) são lidas pelo
         # boto3 direto do ambiente; não passam pela configuração do Django.
+        # `security_token: None`: a chave é estática. Sem isso, o django-storages
+        # leria um AWS_SESSION_TOKEN que a plataforma (ex.: Vercel) ponha no
+        # ambiente e o mandaria junto com a chave do bucket, e o R2 recusaria.
         options = {
+            "security_token": None,
             "bucket_name": bucket,
             "region_name": env_str(env, "AWS_S3_REGION_NAME") or None,
             "endpoint_url": env_str(env, "AWS_S3_ENDPOINT_URL") or None,

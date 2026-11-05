@@ -1,0 +1,17 @@
+# Arquivos que a CLI da Vercel nunca envia (`vercel deploy`). Os arquivos de um
+# deploy ficam visíveis na aba Source do painel: segredo local não pode subir.
+.env
+.env.*
+!.env.example
+
+# Ambiente e dados locais
+.venv/
+media/
+staticfiles/
+db.sqlite3
+
+# Fora do app
+docs/
+.claude/
+.pytest_cache/
+.ruff_cache/

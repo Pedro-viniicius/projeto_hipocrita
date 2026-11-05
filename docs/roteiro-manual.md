@@ -101,6 +101,45 @@ Marque cada passo como ✅ ou ❌ e anote o que viu.
 9. Suba com `SIGNUPS_PER_DAY=0` e abra o cadastro.
    - **Esperado:** a tela diz que o cadastro está fechado, sem formulário, sem data de reabertura, e mostra o contato do responsável (ou diz que ainda não há contato).
 
+## I. Vercel (plano Hobby)
+Só depois da publicação, no domínio de produção (`https://<projeto>.vercel.app`). Os testes automáticos cobrem a rota, o build, o workflow e o servidor com `MAX_UPLOAD_MB=1`; o que segue depende da plataforma ou de um navegador real. Para as fotos, use um celular de verdade (Android com Chrome e iPhone com Safari), no 4G e no Wi-Fi.
+
+**Fotos reduzidas no navegador (`static/js/fotos.js`)**
+1. Em "Novo anúncio", escolha 3 fotos tiradas agora pela câmera do celular (cada uma com mais de 3 MB).
+   - **Esperado:** aparece "Preparando as fotos…" por alguns segundos e some; o botão "Salvar" fica desabilitado nesse intervalo. Salvar funciona e as 3 fotos aparecem no anúncio, com a orientação certa (retrato em pé, não deitado).
+2. Tire uma foto na vertical e salve.
+   - **Esperado:** a foto sai em pé, sem giro.
+3. Escolha uma foto com localização ligada na câmera, salve o anúncio e abra a foto pública (baixe o arquivo).
+   - **Esperado:** sem GPS nem marca da câmera nos metadados (o servidor também os remove).
+4. Escolha as fotos, toque em "Salvar" no meio do "Preparando as fotos…".
+   - **Esperado:** nada é enviado ainda; o envio só ocorre quando o aviso some.
+5. Escolha 3 fotos, abra o seletor de novo e cancele (ou escolha outras).
+   - **Esperado:** o botão volta ao normal; vale a última escolha.
+6. Escolha 3 PNG de captura de tela com transparência.
+   - **Esperado:** viram JPEG com fundo branco (não preto).
+7. No iPhone, escolha uma foto em formato HEIC (da galeria, "Todas as fotos").
+   - **Esperado:** salva (o Safari entrega JPEG) ou, se algum navegador não converter, a mensagem do app ("Este arquivo não é uma foto válida…"). Nunca uma página em branco nem a página de erro da Vercel.
+8. Escolha mais de 3 fotos de uma vez.
+   - **Esperado:** a mensagem do app "Até 3 fotos…", sem perder o texto já digitado.
+9. Abra a tela, vá para outra página e volte pelo botão "Voltar" do navegador.
+   - **Esperado:** o botão "Salvar" não fica travado.
+10. Com JavaScript desligado (Chrome: Configurações do site → JavaScript → Bloquear), envie 1 foto de 3 MB e depois 3 fotos de 1,3 MB cada.
+    - **Esperado:** a 1ª e a 2ª mostram "Esta foto passou de 1 MB. Escolha uma menor." na página do app; nada de 500, nada de página da Vercel. Com 3 fotos de 1,5 MB (corpo acima de 4 MiB) aparece "Envio grande demais", também do app.
+11. (Observação, não é defeito do app) Com JavaScript desligado e 3 fotos de 5 MB, a Vercel responde com a página dela (corpo acima de 4,5 MB). Anote o que aparece.
+
+**Teste de fumaça (README, "Teste de fumaça")**
+12. `/` e `/healthz` dão 200; o CSS tem hash no nome; `/privacidade/` mostra o responsável e o parágrafo sobre "a empresa que hospeda o site".
+13. `curl -i https://<projeto>.vercel.app/_tarefas/limpeza/` dá 401; `curl -i -H "Authorization: Bearer errado" ...` também dá 401; `curl -i -X POST ...` dá 405.
+14. Cron da Vercel: Settings → Cron Jobs → View Log, depois do 1º horário das 06:07 UTC.
+    - **Esperado:** status 200. Se aparecer 400, a Vercel chamou por um endereço que não está em `ALLOWED_HOSTS` (veja o domínio usado no log e acrescente-o). Se aparecer 401, o `CRON_SECRET` mudou depois do último deploy.
+15. GitHub → Actions → "Limpeza de dados vencidos" → Run workflow.
+    - **Esperado:** termina em verde; o log não mostra o segredo. Depois, confira que as execuções agendadas (de 30 em 30 minutos, com algum atraso normal do GitHub) aparecem e passam. Se falhar, a mensagem mostra só o status HTTP: veja o diagnóstico no README (Vercel, passo 9).
+16. 6 logins errados num aparelho dão 429; de outro aparelho, em outra rede (4G), o login continua liberado.
+17. Nos cabeçalhos: CSP, HSTS (depois de ligar `SECURE_HSTS_SECONDS`) e cookies `Secure`. `curl -I http://<projeto>.vercel.app/` redireciona para `https://`.
+18. Anúncio com fotos: as imagens carregam do R2 sem erro de CSP no console do navegador (acrescente o endereço do R2 em `CSP_EXTRA_IMG_SRC` se faltar).
+19. Painel da Vercel → Logs: faça uma busca por "banana" no site.
+    - **Esperado:** o termo aparece no log da plataforma, como a página de privacidade avisa. Confirme que não há o número de WhatsApp em nenhum log (o 302 de `/oferta/<id>/whatsapp/` não aparece com o número).
+
 ## Teste com usuários reais (seção 10.3 do pedido)
 Ainda não houve teste com usuários. Quando houver acesso, observe 3 a 5 pessoas da comunidade fazendo, sem ajuda:
 1. "Ache algo doce que dá para comprar hoje e chame quem vende."

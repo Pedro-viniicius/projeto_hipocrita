@@ -1,0 +1,65 @@
+# Limpeza de dados vencidos de 30 em 30 minutos no site publicado na Vercel.
+#
+# No plano Hobby o cron da Vercel roda só 1 vez por dia (vercel.json), e a página
+# de privacidade promete apagar os contadores do limite de tentativas em 24 h.
+# Este agendamento chama a mesma rota (/_tarefas/limpeza/) a cada 30 minutos: o
+# GitHub atrasa e às vezes descarta execuções agendadas, então a folga cobre uma
+# rodada perdida. Se ele parar de vez, o cron diário da Vercel é o piso (a página
+# avisa: até 2 dias). Em repositório público, o GitHub desliga este agendamento
+# depois de 60 dias sem atividade e avisa por e-mail quem alterou a linha `cron`
+# por último (README, "Vercel").
+#
+# Cadastre no repositório (Settings → Secrets and variables → Actions):
+# - Secret   CRON_SECRET: o mesmo valor do CRON_SECRET da Vercel.
+# - Variable SITE_URL:    endereço do site, com https e sem barra no fim.
+#
+# Nada aqui imprime o segredo nem a resposta da rota.
+name: Limpeza de dados vencidos
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: limpeza
+  cancel-in-progress: false
+
+jobs:
+  limpeza:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Chamar a rota de limpeza
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$SITE_URL" ]; then
+            echo "::error::Cadastre o secret CRON_SECRET e a variable SITE_URL do repositório."
+            exit 1
+          fi
+          case "$SITE_URL" in
+            https://*) ;;
+            *) echo "::error::SITE_URL precisa começar com https://"; exit 1 ;;
+          esac
+          # O corpo da resposta vai para um arquivo temporário e nunca para o log.
+          body_file="$(mktemp)"
+          trap 'rm -f "$body_file"' EXIT
+          # O cabeçalho vai pela entrada padrão, não pela linha de comando. Sem
+          # --location: um redirecionamento (3xx) não é seguido e conta como falha.
+          if ! status="$(printf 'Authorization: Bearer %s\n' "$CRON_SECRET" \
+              | curl --silent --show-error --proto '=https' \
+                  --max-time 60 --retry 2 \
+                  --header @- --output "$body_file" --write-out '%{http_code}' \
+                  "${SITE_URL%/}/_tarefas/limpeza/")"; then
+            echo "::error::A rota de limpeza não respondeu (rede, DNS ou TLS)."
+            exit 1
+          fi
+          if [ "$status" != "200" ] || [ "$(cat "$body_file")" != "ok" ]; then
+            echo "::error::A rota de limpeza respondeu HTTP $status; o esperado é 200 com \"ok\". Veja o diagnóstico no README (Vercel, passo 9)."
+            exit 1
+          fi
+          echo "Limpeza concluída."

@@ -1,8 +1,14 @@
 """Página de privacidade (LGPD art. 9) e aviso de deploy sem responsável (S4)."""
 
+import json
+from datetime import timedelta
+from pathlib import Path
+
 import pytest
+from django.conf import settings as django_settings
 from django.core import checks
 
+from apps.core import retention
 from apps.core.testing import assert_accessible_page, parse_html
 
 pytestmark = pytest.mark.django_db
@@ -89,6 +95,59 @@ def test_says_that_touching_whatsapp_keeps_a_code_of_the_ip(client):
     retention_section = text.split("Por quanto tempo guardamos")[1].split("Buscas sem resultado")[0]
     assert "até 24 horas" in retention_section
     assert "enviam formulário ou tocam em “Consultar no WhatsApp”" in retention_section
+
+
+def test_says_the_hosting_company_logs_accesses_on_its_own(client):
+    # Etapa 4 (publicar-vercel): a hospedagem registra por conta própria, com prazo curto.
+    text = page_text(client.get(URL))
+    section = text.split("Por quanto tempo guardamos")[1].split("O código do IP e do e-mail")[0]
+    assert (
+        "a empresa que hospeda o site registra, por conta própria, cada acesso "
+        "(endereço da página, inclusive o termo buscado, navegador e IP) e apaga esses "
+        "registros no prazo dela, que é curto (na hospedagem atual, até 1 dia)"
+    ) in section
+    # quem faz o quê: os registros do próprio site seguem sem IP
+    assert "os registros que o nosso site mesmo faz não guardam IP" in section
+    sharing = text.split("Com quem compartilhamos")[1].split("Denúncias")[0]
+    assert "empresa de hospedagem" in sharing
+    # S2: a ressalva vale para a hospedagem (Vercel) e para as fotos (Cloudflare R2).
+    assert (
+        "A empresa de hospedagem e o serviço de armazenamento de fotos podem processar "
+        "os dados fora do Brasil, como nos Estados Unidos."
+    ) in sharing
+
+
+def test_says_how_long_counters_last_if_the_scheduled_cleanup_fails(client):
+    # R1/S1: o GitHub Actions pode atrasar, descartar ou ser desligado; a página continua
+    # verdadeira com só o cron diário da Vercel.
+    text = page_text(client.get(URL))
+    retention_section = text.split("Por quanto tempo guardamos")[1].split("Buscas sem resultado")[0]
+    assert (
+        "Limite de tentativas: apagamos em até 24 horas; se a limpeza automática falhar, "
+        "em até 2 dias."
+    ) in retention_section
+    code_section = text.split("O código do IP e do e-mail")[1].split("Com quem compartilhamos")[0]
+    assert (
+        "apagado em até 24 horas (em até 2 dias, se a limpeza automática falhar)"
+    ) in code_section
+
+
+def test_fallback_limit_comes_from_the_code_rounded_up_to_days(client, monkeypatch):
+    monkeypatch.setattr(retention, "RATE_LIMIT_MAX_HOURS_IF_SCHEDULER_FAILS", 50)
+    text = page_text(client.get(URL))
+    assert "se a limpeza automática falhar, em até 3 dias" in text
+
+
+def test_fallback_limit_covers_the_daily_vercel_cron():
+    # Pior caso só com o cron diário: o contador vence com RATE_LIMIT_PURGE_HOURS logo
+    # depois de uma rodada e espera a próxima. No Hobby a rodada cai em qualquer minuto da
+    # hora marcada, então o intervalo entre duas rodadas é de até 24 h 59 min (< 25 h).
+    vercel = json.loads((Path(django_settings.BASE_DIR) / "vercel.json").read_text())
+    (cron,) = vercel["crons"]
+    minute, hour, *rest = cron["schedule"].split()
+    assert minute.isdigit() and hour.isdigit() and rest == ["*", "*", "*"]  # 1 vez por dia
+    worst = timedelta(hours=retention.RATE_LIMIT_PURGE_HOURS) + timedelta(hours=25)
+    assert worst <= timedelta(hours=retention.RATE_LIMIT_MAX_HOURS_IF_SCHEDULER_FAILS)
 
 
 def test_explains_the_code_without_jargon_or_false_promise(client):

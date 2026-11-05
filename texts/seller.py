@@ -99,8 +99,15 @@ VARIANT_PRICE_HELP = "Exemplo: 8,00"
 
 PHOTOS_LABEL = "Fotos"
 PHOTOS_HELP = (
-    "Até 3 fotos, cada uma de até {mb} MB (JPG, PNG ou WebP). "
+    "Até 3 fotos (JPG, PNG ou WebP), de até {mb} MB cada. "
+    "Se forem maiores, o site tenta diminuí-las antes de enviar. "
     "Se o formulário voltar com erro, escolha as fotos de novo."
+)
+# Lidos pelo static/js/fotos.js: o template os renderiza escondidos e o script só os mostra.
+PHOTOS_PROCESSING = "Preparando as fotos…"
+PHOTOS_TOTAL_TOO_BIG = (
+    "As fotos escolhidas ainda ficaram pesadas demais para enviar. "
+    "Escolha menos fotos ou fotos menores."
 )
 PHOTOS_CURRENT = "Fotos atuais"
 PHOTO_REMOVE = "Remover esta foto"

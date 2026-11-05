@@ -130,6 +130,10 @@ PRIVACY_CONTACT_EMAIL = envlib.env_str(ENV, "PRIVACY_CONTACT_EMAIL")
 # Limite de tentativas: quantos proxies confiáveis ficam na frente do app.
 TRUSTED_PROXY_HOPS = envlib.env_int(ENV, "TRUSTED_PROXY_HOPS", 0)
 
+# Segredo da rota de limpeza agendada (/_tarefas/limpeza/, Vercel Cron e GitHub
+# Actions). Vazio desliga a rota (404); na VPS a limpeza é o cron do servidor.
+CRON_SECRET = envlib.env_str(ENV, "CRON_SECRET")
+
 # Sessão, CSRF e HTTPS.
 _security = envlib.security_settings(ENV, debug=DEBUG)
 SESSION_COOKIE_HTTPONLY = _security["SESSION_COOKIE_HTTPONLY"]
